@@ -1,0 +1,835 @@
+1. Contents
+1. Contents	2
+2. Project overview	3
+2.1 Project Background	3
+2.2 Problem Definition	3
+2.3 System Objectives	3
+2.4 Target Users	4
+2.5 Scope and Limitations	4
+3 Requirement Analysis	4
+3.1 User needs	4
+3.2 Functional Requirements	5
+3.3 Non-functional Requirements	6
+3.4 User stories	6
+4. System Analysis & Design	8
+4.1 Candidate wants to register an account	8
+4.2 Candidate can browse for jobs	9
+4.3 Employer can upload jobs	10
+4.4 Candidate or Employer can manage their profile	11
+4.5 Employer View and Search Candidate Profiles	12
+5. Development Model	14
+5.1 Kanban methodology	14
+5.2 Application	14
+5.2.1 Development workflow	14
+5.2.2 Task management process	14
+5.2.3 Team roles and responsibilities	15
+6. Development Plan	16
+6.1 Project Timeline Overview	16
+6.2 Milestone Planning	17
+6.3 Task Allocation Among Team Members	18
+6.4 Gantt Chart	18
+7. Development Progress	19
+7.1 Development stages	19
+7.2 Task planning and prioritisation	20
+7.3 Task progress and completed features	21
+7.4 Progress tracking methods	21
+7.5 Meeting minutes	23
+8. Risk Analysis & management	27
+9. References	30
+2. Project overview 
+2.1 Project Background
+As the world embraces the digital, it follows that job recruitment and application has also moved increasingly online. Millions of job listings and jobseekers are handled by online platforms like Seek and Indeed, and this is only growing. Through these platforms, however, candidates struggle to find roles truly relevant to their qualifications and experience. Additionally, employers and businesses are overwhelmed by high volumes of applications that do not necessarily match their requirements.
+
+This issue has intensified over COVID-19, with available remote and hybrid work meaning candidates have a greater pool of jobs to apply to globally. While most industry-standard platforms have integrated AI into their platforms, employers and candidates still remain frustrated during the hiring process. (Yeyati and Seyal, 2025) This highlights that these AI-powered talent matching systems can still be developed and improved to reduce instances of candidates receiving non-ideal jobs and employers being overwhelmed by under-qualified applications.  
+
+To solve this problem, the Intelligent Talent Matching Platform integrates a two-way recommendation engine, through the inclusion of AI and ML-driven matching, to improve on the results of current solutions. This engine both recommends relevant jobs to candidates and recommends relevant candidates to employers. This aims to reduce the effort needed by both parties during the recruitment and job-hunting process.  
+2.2 Problem Definition 
+For Candidates
+Waste time applying to roles they are unqualified/ are not a good fit for
+Profiles are static with no way to highlight strengths towards job applications and employers
+For Employers
+Receive a large amount of irrelevant applications
+Cannot quickly shortlist candidates by multiple criteria concurrently
+For both:
+Keyword searches do not produce contextually relevant results
+
+The problems of these users highlight common issues in existing job hunting applications which this system design aims to solve. 
+2.3 System Objectives
+ID
+Objective
+O1
+To provide candidates with a profile system that accurately represents their qualifications
+O2
+To provide employers with a platform to publish job postings with specific requirements 
+O3
+Integrate a two-way recommendation engine, providing the top 10 matches for either jobs for candidates or candidates for jobs (employers)
+O4
+Allow job and candidate search filtering from keywords
+O5
+Ensure security for all user data
+O6
+Use agile development methodology to deliver a scalable and maintainable system
+
+2.4 Target Users 
+Candidates 
+Recent graduates
+Professionals looking to change jobs
+Users looking for intelligent recommendations
+Users valuing time efficiency and finding the most relevant jobs to their qualifications
+
+Employers
+Small/medium businesses or startups with minimal HR resources
+Employers wanting efficient candidate shortlisting from the specified job requirements
+2.5 Scope and Limitations
+In scope
+Two-way recommendation engine
+Candidate profiles 
+Employer profiles and job listings 
+User interface that is clear to navigate and use
+Security of user information
+
+Out of scope
+Payment integration
+Communication between users 
+Companion mobile application 
+
+Limitations
+The core limitation of this project is a short development time. 
+Additionally, the development team is small with 4 developers. 
+
+Assumptions
+Users know how to navigate a web application (no tutorial provided)
+Users will be real and provide accurate information
+Two-way recommendation engine’s performance will increase as more data is provided
+3 Requirement Analysis
+3.1 User needs
+3.1.1 Candidate needs
+Platform to advocate their skills to employers through intelligent qualification matching to jobs
+Avoid seeing irrelevant job listings
+To be recommended job positions that match their qualifications
+To be able to control their data in the system (including updating or deleting data)
+
+3.1.2 Employer needs
+Want to fill an open job position in their company
+To publish detailed job positions 
+To only receive the most relevant candidates as suggestions
+To sort and filter candidates by keyword(s)
+3.2 Functional Requirements 
+FR01
+Candidate can make an account with an email and password
+FR02
+Candidate can log in via secure login mechanism 
+FR03
+Candidate can create a profile including name, contact, education, major, years of experience and preferences
+FR04
+Candidate can upload a resume in PDF or DOCX format
+FR05 
+Candidate can edit or delete their profile at any time
+FR06
+Candidate can view all available job postings 
+FR07
+Candidate can browse job opportunities through keyword searches on the job descriptions
+FR08
+Candidate can view the top 10 most relevant job positions
+FR09
+Employer can make an account and link it to a company
+FR10
+Employer can update or delete their account
+FR11
+Employer can create and post a detailed job listing including job title, company information, job description, required education level, required skills, years of experience, work mode and job location
+FR12
+Employer can view all candidate profiles for one of their job listings
+FR13
+Employer can filter candidates by skill, education level and years of experience
+FR14
+ Employers can search directly for candidates matching specific criteria
+FR15
+Employer can view top 10 candidate recommendations based on the job listing
+FR16
+The system will encrypt user data at rest and in transit
+
+3.3 Non-functional Requirements 
+NFR01
+The system will have a maximum downtime, excluding scheduled maintenance, of 10 minutes per month
+NFR02
+The system will be accessibly designed and executed
+NFR03
+The system should collect only the necessary user data and let the user have control over their data.
+
+3.4 User stories
+User story 1: Candidate can register an account
+As a candidate I want to register an account and upload a resume so that I can access the platform and present my qualifications to employees
+Acceptance Criteria 
+Email must be unique and valid
+Password has to be at minimum 8 characters
+Resume upload accepts PDF and DOCX only, maximum 5MB
+Confirmation shown on successful registration 
+
+
+
+User story 2: Candidate can browse for jobs
+As a candidate I want to view, search and receive job recommendations so that I am able to find job opportunities that are relevant to me
+Acceptance Criteria:
+All active job postings are shown on the homepage
+Keyword search applies to job description fields only
+Recommendations update when profile is edited
+Top-10 job recommendations are generated from the candidate profile 
+
+
+
+User story 3: Employer can upload jobs
+As an employer, I want to register an organisation account so that I can access employer features and start posting job listings
+Acceptance Criteria
+Company name and valid contact email are required
+Account role is set to Employer on registration
+Employer accounts cannot access candidate-only features
+Confirmation shown on successful registration
+
+
+User story 4: Candidate or Employer can manage their profile
+As a Candidate or employer I want to manage my profile so that I can keep my information current and control my data on the platform.
+Acceptance Criteria
+All required fields must be filled before saving 
+Profile is able to be edited at any time
+Deleting profile removes all associated data including resume
+Confirmation prompt shown before deleting 
+
+
+
+User story 5: Employer can View and Search Candidate Profiles
+As an employer I want to view, search filter and receive candidate recommendations so that I can efficiently identify and shortlist the most suitable candidates
+Acceptance Criteria
+Candidate profile visible on employer homepage
+Filters can be applied by skill, education and experience
+Recommendations update when job posting is edited
+
+
+
+User story 6: Employer can Register Account (as Organisation)
+As an Employer I want to register an organisation account so that I can access employer features and start posting job listings
+Acceptance Criteria
+Company name and valid contact email are required
+Account role is set to Employer on registration 
+Employer accounts cannot access candidate-only features
+Confirmation shown on successful registration
+
+
+4. System Analysis & Design
+4.1 Candidate wants to register an account
+
+
+4.2 Candidate can browse for jobs 
+Use Case
+Candidate can browse for jobs
+Scenario
+A candidate wants to search for a job so that they could apply
+Trigger
+The candidate enters a keyword in the search field, or filters based on skills, job type, etc.
+Brief Description
+Based on the candidate’s search input (keyword or filter), the system will display job listings that would be relevant to the candidate.
+Actor
+Candidate
+Stakeholder
+Candidate
+Pre-Condition
+The candidate must already have an account
+Post-Condition
+The system will display all relevant job listings in the main page that the candidate can browse from
+Basic Flow
+Actor
+System
+1. The candidate enters a keyword or applies filters
+1.1 The system retrieves the keyword entered or the filters applied
+1.2 The system will retrieve the user’s job profile data 
+1.3 The system collects the jobs listings relevant to the user
+1.4 The system displays the jobs listings in the dashboard
+2. The user clicks on a job description
+2.1 The system displays the job description to the user
+Alternative Flow
+None
+Exception Flow
+1. The user enters a keyword or filters that does not match a job listing
+2. The system displays ‘No relevant content’
+
+4.3 Employer can upload jobs
+
+Use Case
+Create and upload a job posting
+Scenario
+An employer wants to post a job listing so that candidates can apply.
+Trigger
+The employer clicks on a ‘Create Listing’ button.
+Brief Description
+The system will display the job listing containing the job’s information that candidates can browse or apply to.
+Actor
+Employer
+Stakeholder
+Employer, Candidates
+Pre-Condition
+The employer must already have an account that represents their company
+Post-Condition
+The system will create and contain the job listing, which is visible to candidates
+Basic Flow
+Actor
+System
+1. The employer clicks on a ‘Create Listing’ tab
+1.1 The system navigates to the main ‘Create Listing’ page 
+1.2 The system displays a form
+2. The employer fills out the job details
+2.1 The employer clicks the ‘Finish’ button to confirm
+2.1 The system stores the information into a database
+2.2 The system navigates to the job dashboard
+2.3 The system displays the listing
+Alternative Flow
+None
+Exception Flow
+2.3 The employer does not fill out required fields
+2.4 The system displays a message to fill out required fields
+
+4.4 Candidate or Employer can manage their profile 
+
+
+4.5 Employer View and Search Candidate Profiles
+
+
+
+4.6 Employer Register Account (as Organisation) 
+
+
+5. Development Model
+For this software project, the Kanban development methodology was chosen. This agile methodology allows for greater flexibility than a structured methodology, which has been considered due to the anticipated changed requirements in week 8. 
+
+Section written with reference to Atlassian agile topics information (Radigan, 2024) and Kanbantool.com (2026). 
+5.1 Kanban methodology
+Kanban methodology is an agile methodology that works by organising team tasks as a continuous flow. Tasks are detailed as cards and added to the project backlog/to do section. The cards then progress through different stages/sections as work is done on them. Most commonly these stages are “To Do”, once the task is started it moves to “In Progress”, and once completed it moves to “Done”. This allows the team to control and monitor how many tasks are currently in development and how fast the team is working. 
+5.2 Application
+5.2.1 Development workflow
+As our development has a strict timeline and reduced time due to everyone’s university commitments, the overall development plan (see section 6) has been outlined in a more structured way, including a gantt chart. As some requirements will change over the course of this project but continual deployments that Scrum advocates for are not feasible for this project, Kanban will be used in conjunction with the structured development plan. This will allow for project requirements to change and to ensure the team knows our strict development and university assignment milestone due dates. 
+
+The Kanban development workflow allows for a visualised representation of task progressions through kanban boards. The workflow and tasks in development can be monitored and adjusted to changing requirements and priorities as tasks are completed to ensure the team is working efficiently and the most crucial features are finished. The process of refining the workflow over the course of development fosters accountability and improvement from team members. 
+
+5.2.2 Task management process
+Kanban allows for greater team efficiency by identifying work processes that are currently not working for the team. The team must openly talk with the project manager for any process issues. The project manager can evaluate if too many tasks are “In Progress” or if there is a bottleneck occurring during a stage. The current workload and approach can then be adapted to resolve these issues, ensuring development will continue to progress smoothly.
+
+To manage the task processes the project manager will control stakeholder interactions and development planning so the team only needs to focus on the WIP. Allows for change to happen at any time. Tasks in the backlog can be re-prioritised at any time, tasks in progress are still finished. Tasks are written as cards with detailed information. Categorise and standardise workflow visually and in stages. Identify blockers and dependencies when moving tasks to active development. Set work-in-progress (WIP) limits so team members are not being overburdened and workflow remains steadily progressing. This also helps efficiency as they do not need to switch between many tasks. 
+
+Some key metrics used to monitor team progress are cycle times and cumulative flow diagrams. Cycle time is the time taken to complete a task. The goal is for the average cycle time to decrease or stay the same across the development process. Cumulative flow diagrams show the number of tasks in each state throughout development. This visual representation of team data can indicate if there are any bottlenecks or issues in a state for the project manager to review and fix with the team.
+
+5.2.3 Team roles and responsibilities
+Kanban can work with existing team roles but adds a Service request manager, service delivery manager, Kanban coach and Kanban sponsor. 
+The project manager will take on both the service request manager and service delivery manager role due to the small team size. 
+
+As service request manager they will handle understanding new requirements and customer needs and writing new tasks (cards) to add to the Kanban board “To Do” section. Through communication with stakeholders and the team, tasks will be categorised, prioritised and given a time estimate for completion. 
+
+As service delivery manager they will handle the tasks across their lifecycles until they are marked “Done”. Team performance is tracked from the Kanban board data, through statistics like lead and cycle times, throughput and bottlenecks. This allows for control and knowledge of the team’s quality and speed of delivery. If any issues are found they will be addressed through delivery reviews and backlog replenishment meetings. This ensures that the team is supported for continuous improvements and that the work being done stays in scope and customer expectations/ agreements.   
+
+The kanban coach role will not be specifically assigned as the team is not transitioning from a structured development process, rather any specific Kanban questions will be handled by the Project manager. Similarly, Kanban sponsor is not allocated as our team does not have a complex structure and there is no specific financial or work support available.  
+
+Project team member roles:
+Project manager 
+
+(Service request manager, Service delivery manager, Kanban coach)
+Developer 
+
+(Team member)
+Developer 
+
+(Team member)
+Developer 
+
+(Team member)
+Tabitha Morley
+Erin Novelo
+Lucas Smith 
+Prakash Ghimire
+Responsibilities 
+Manage Kanban board inputs
+Team reviews
+Ensure team remains in scope and delivering value to stakeholders
+Handle requirement changes 
+Backend Developer
+Contribute to documentation
+Frontend developer
+Security
+Bug fixes
+Contribute to documentation
+Frontend developer
+Security
+Bug fixes
+Contribute to documentation
+Backend developer
+Controlling tech stack
+Unit and integration tests
+
+
+6. Development Plan
+6.1 Project Timeline Overview 
+The project timeline spans over 11 weeks, from 19 March 2026 to 05 June 2026.
+Tech stack: React.js (frontend), NestJS (backend), Elasticsearch (database).
+Development team: 
+Tabitha (Project Manager and Backend Developer)
+Prakash (Backend Developer)
+Erin (Frontend Developer)
+Lucas (Frontend Developer)
+The project will be completed over 5 distinct phases. These phases act as a minimum completion indicator to ensure all key work will be completed by the final milestone.  
+Phase breakdown
+To see specific low-level tasks please refer to 7.1 Development stages.
+
+Phase 1: Initiation and planning (23 March to 17 April, 20 days)
+Team role allocation
+Analyse project requirements 
+Discover requirements
+Develop use cases (stories, diagrams and descriptions)
+Requirement Analysis
+Project Overview
+Risk Analysis
+Development Model
+
+Phase 2: Design (20 April to 24 April, 5 days)
+Wireframe design, covers all major screen for all use cases
+Architecture Design, define database models, API Contracts, system structure
+Setup dev environment and Github repo
+
+Phase 3: Execution (27 April to 15 May, 15 days)
+User registrations( Candidate and Employer) 
+Organization registration
+User Manage Profile
+Candidate View and Search Jobs
+Employer upload Jobs
+Employer search and filter candidates
+      All end to end features including backend and frontend integration to be completed
+
+Phase 4: Matching engine (18 May to 22 May, 5 days)
+Job and candidate matching engine
+Elasticsearch powered, recommends top 10 candidates to employer for job
+
+Phase 5: Testing
+Unit tests and Integration test
+User validation testing
+Bug fixes and optimization
+Deployment
+Final documentation
+6.2 Milestone Planning
+Milestone 1: Progress report
+Due: 17 April 2026 
+Main Tasks: 
+Allocate team member roles
+Complete the progress report including: Project overview, requirement analysis, system analysis and design, development model, development plan, development progress and risk analysis and management. 
+Create the github repository
+
+Milestone 2: Final report and Application 
+Due: 05 June 2026
+Main Tasks: 
+Wireframe design
+Architecture design
+Frontend development and Backend development
+Frontend and backend integration
+Job and candidate matching algorithm 
+Unit and integration tests
+User testing 
+Bug fixes
+Final documentation 
+6.3 Task Allocation Among Team Members
+Subject to change as using Kanban methodology. For specific task allocation refer to 7.2 Task planning and prioritisation. 
+The following is general task allocations for the course of development: 
+Tabitha 
+Development Model
+Development Progress
+Report formatting and meeting minutes
+Backend API development
+Erin
+Risk Analysis and Management
+Use Cases
+Wireframe Design
+UI development 
+Prakash
+Development Plan
+Use Cases
+Backend API development
+Recommendation engine development
+Integration test and deployment
+Lucas
+Project Overview
+Requirement Analysis
+User Stories
+Wireframe Design
+UI development
+
+6.4 Gantt Chart
+The following gantt chart outlines the minimum completion dates for the general development process. This is used as a basis for the Kanban development, ensuring the development will be completed in time, however, individual tasks are subject to change. 
+
+
+7. Development Progress
+7.1 Development stages
+The following figure allocates specific tasks to each development phase. Team member allocations for these tasks can be seen in the next section 7.2. These tasks are all currently located in the project backlog/ ‘To Do’ section and will be moved to being ‘In Progress’ when the team has completed the tasks in the current phase that are ‘In Progress’. The number of circles for each task represents the overall task impact on the project. 
+7.2 Task planning and prioritisation
+The below image shows tasks ordered by phases. Within these phases, task prioritisation is ranked by the impact of the task to the project. Additionally, the value of “score” influences task prioritisation. “Score” is defined by impact / effort. Tasks with a score less than 2 (highlighted in red in the below image) will take a lot of effort in proportion to the overall impact. Lower scores should have less priority, however, the increased effort needed needs to be accounted for in planning. 
+
+Individual prioritisation of low-level tasks will be done every time new tasks are added to the Kanban board. 
+
+
+7.3 Task progress and completed features
+Completed Tasks and features:
+Team role allocations
+Project overview
+Requirement Analysis
+Requirement Analysis - user stories
+System Analysis and Design - user case diagrams
+System Analysis and Design - user case description
+Development Model
+Development Plan
+Development Progress
+Risk Analysis and management
+Finalise progress report
+Dev environment and github repository
+Shared figma design file
+Tasks in progress:
+Development progress (ongoing for the remainder of the project)
+Wireframe design
+Architecture design
+7.4 Progress tracking methods
+Each Kanban board reflects progress on the Monday of the specified week. Tasks that are ‘For Review’ should be finalised by the end of the week and moved to ‘Done’ by the next week. 
+
+Kanban board week 3
+In the interest of space, the To Do (/backlog) section will be omitted from this week onwards.
+
+                            TO DO                           |    IN PROGRESS  |     FOR REVIEW    |          DONE  
+
+Kanban board week 4
+
+
+Kanban board week 5
+
+Kanban board week 6
+
+Kanban board week 7
+
+
+
+Overall comments: 
+Team is currently on schedule for the minimum set task due dates
+Key metrics from the above Kanban boards:
+Bottlenecks: none currently 
+Current Throughput: 1.5 tasks per week [This is the average of done tasks over the 5 weeks]
+Current Lead time: 12.8 days  [average from when a task is added to the backlog/To do and when it is completed]
+Current Cycle time: 13.4 days  [average time a task spends ‘In Progress’]
+
+Over the course of development, the team will try to reduce lead and cycle time and increase throughput. These metrics will be continually monitored as development progresses to inform decisions and ensure team efficiency and production. 
+
+
+
+
+7.5 Meeting minutes
+Week 3 Meeting Minutes - 19/03/2026 - 12:30 pm to 2:30 pm - Lab room: 3-127
+Attendees:
+Tabitha, Erin, Prakash, Lucas
+Absentees: 
+N/A
+Goals + milestones
+Agenda
+Finish progress report by Thursday week 6
+Item 1: Look at the progress report document
+Item 2: Brainstorm tech stack we want to use
+Item 3: Discuss project specifications and functionalities
+Item 4: Allocate roles and tasks
+Discussion points
+Action plan:
+What tech stack people know and what to use for this project
+Which members should complete what sections of the report
+Tabitha as project leader
+We will use React, Nodejs, Expressjs and Elasticsearch for our database.
+We will prioritise the documentation early to be able to more swiftly move into prototyping
+Tabitha to start development model and development progress sections
+Lucas to start project overview and requirement analysis
+Prakash to start development plan and to collaborate on the system analysis and design
+Erin to start risk analysis and management and to collaborate on the system analysis and design
+Done last week
+Planned for next week
+N/A
+Online group meeting on Thursday from 12:30pm
+Discuss member progress
+Finalise requirements to progress to system analysis and design
+
+
+
+
+Week 4 Meeting Minutes - 26/03/2026 - 12:30 pm to 1:00 pm - Building 3 lobby
+Attendees:
+Tabitha, Erin, Prakash, Lucas
+Absentees: 
+N/A
+Decisions
+Agenda
+Finish progress report by Thursday week 6
+Item 1: Discuss work done
+Item 2: Raise any problems
+Discussion points
+Action plan:
+Continue working on assigned tasks 
+Aim to finish document work by next week 
+Aim to finish assignment one by next week 
+Tabitha to continue development model and development progress sections
+Lucas to continue project overview and requirement analysis
+Prakash to continue development plan and to collaborate on the system analysis and design
+Erin to continue risk analysis and management and to collaborate on the system analysis and design
+Done last week
+Planned for next week
+Tabitha - Chose to work with Scrum methodology, started brainstorming development plan.
+Erin - Brainstormed risk assessment, allocated requirements for the use cases
+Prakash - Gantt chart
+Lucas - Continued working on the project overview, highlighting the background, definitions, objectives and users. I also created a draft of the requirement analysis and users stories.
+Finalise first draft of the document (Assignment 1)
+
+
+
+
+Week 5 Meeting Minutes - 02/04/2026 - 12:30 pm to 1:30 pm - 314 Lab: 3-127
+Attendees:
+Tabitha, Erin, Prakash
+Absentees: 
+Lucas
+Decisions
+Agenda
+Finish progress report by Thursday week 6
+Item 1: Discuss work done
+Item 2: Raise any problems
+Item 3: Plan to keep document within the 30 pages
+Discussion points
+Action plan:
+6 new user requirements:
+User wants to register account (includes upload)
+User can manage profile
+User can view/search jobs
+Employer can register account (as organisation)
+Employer can upload jobs
+Employer view/search candidate profiles
+- Change to Kanban methodology to fit better with development plan
+- Merge use cases into more board user requirements
+- Project will use analysing resume to get user info
+Tabitha to continue development model and development progress sections
+Lucas to re-write the user stories 
+Prakash to continue system analysis and design
+Erin to continue risk analysis and management and to collaborate on the system analysis and design
+Done last week
+Planned for next week
+Tabitha - Changed to Kanban methodology to fit better with university timeline
+Erin - Started making use cases for 3 requirements, and currently doing the use case descriptions. Drafted the risk assessment. 
+Prakash - Development Plan
+Lucas - completed the requirement analysis document. Revised use cases to remove the admin role and reformatted the document to meet page limits.
+Complete the progress report (Assignment 1)
+
+
+
+
+Week 6 Meeting Minutes - 09/04/2026 - 12:30 pm to 1:30 pm - Bld 3 lobby
+Attendees:
+Tabitha, Erin, Prakash, Lucas
+Absentees: 
+
+
+Decisions
+Agenda
+Finish progress report by Thursday week 6
+Finish figma prototypes end of week 8
+Finish implementing class diagram by week 8
+Item 1: Discuss work done
+Item 2: Raise any problems
+Item 3: Draft backend class architecture
+Item 4: Divide up frontend figma styling
+Discussion points
+Action plan:
+Brainstormed class diagram from functional requirements and use cases
+Delegated backend and frontend tasks to team members
+Lucas and Erin to do figma wireframes and React
+Tabitha and Prakash to do backend, NestJS and Elasticsearch
+Tabitha to create github repo
+Erin to create figma file
+Group to meet up next week during lab
+Lucas and Erin to start design/wireframes
+
+Lucas and Prakash to refine document work
+
+Erin and Prakash to finish use case diagrams and descriptions
+
+Erin to finish risk analysis 
+
+Tabitha to continue development progress
+
+Tabitha and Prakash to start backend
+Done last week
+Planned for next week
+Tabitha - Finished working on development model, continued working on development progress
+Erin - Continued working on the risk assessment, planning on updating the use case diagrams and descriptions to fit the new main requirements
+Prakash - Use case descriptions and diagram
+Lucas - Finalised requirement plan, began planning frontend and figma
+Meeting next week during lab
+Work on starting frontend design and backend coding
+
+
+
+
+
+Week 7 Meeting Minutes - 16/04/2026 - 12:30 pm to 2:30 pm - 314 Lab: 3-127
+Attendees:
+Tabitha, Prakash, Lucas
+Absentees: 
+Erin
+Decisions
+Agenda
+Upload progress report by Friday
+Finish figma prototypes end of week 8
+Finish implementing class diagram by week 8
+Item 1: Discuss work done
+Item 2: Raise any problems
+Item 3: Finialise progress report
+Discussion points
+Action plan:
+Finalising the progress report document
+Discussed functional requirements and use cases so everyone is on the same page
+Lucas and Erin to continue design/wireframes
+
+Tabitha and Prakash to continue backend
+Done last week
+Planned for next week
+Tabitha - Continued development progress, wrote up meeting minutes and formatted the progress report document
+Erin - Finished the use case and use case descriptions and started planning the wireframes
+Prakash - Improved Gantt chart and  development plan and finalized 
+Lucas - Continued to work on wireframes as well as document refinement.
+No meeting: university break week
+Continue on assigned work
+
+
+
+8. Risk Analysis & management 
+Risk Assessment and Analysis
+
+Risks are identified based on classifications relevant to the Talent Matching Platform such as stakeholder, technological, schedule, scope, and resource, and each contain risks that are the most likely to arise throughout the product’s development. The potential impact of each is outlined alongside the description, and the severity is measured using the 5X5 risk matrix (see Appendix fig. 1) which can help in analysing the severity of a risk and allow for immediate response. Mitigation strategies are then identified to reduce the likelihood and impact, ensuring that practices and activities are effectively managed and controlled all throughout the project life cycle.
+
+Description
+Impact
+PxI (Probability x Impact)
+Mitigation strategies
+Stakeholder Risks
+Lack of communication between team members and other stakeholders
+Misunderstanding of requirements, which can affect business objectives
+Disagreements 
+Resource and schedule overrun
+3 (Moderate) x 3 (Significant)
+= 9 
+Set up specific meeting times and follow through
+Document the meetings through meeting minutes and distribute
+Use communication software
+Differences in expectations with regards to the end product
+IT developers will need to keep up with requirements being set by project owners/sponsors
+2 (Unlikely) x 3(Significant)
+= 6 
+Keep documentations of the expected end product
+Set up meetings for product development updates and after every milestones
+Uncoordinated production process between team members
+Backlog of tasks
+Deadline delays
+Resource and schedule overrun
+Impact business objectives
+3 (Moderate) x 4 (Major) 
+= 12
+Set schedules for deliverable deadlines
+Create and follow a team charter
+Technological Risks
+Skill shortage with chosen technologies
+End up with a product that lacks quality
+3 (Moderate) x 4 (major) 
+= 12
+Use technologies that everyone is familiar with
+Skewed priorities (eg. prioritise design over functionalities)
+Product will not perform well in some sections
+Unusable product
+Schedule and resource overrun
+2 (Unlikely) x 6(Significant)
+= 12 
+Follow the scope
+Balance time and effort placed in all sections 
+Incompatibilities between softwares and systems chosen
+Schedule and resource overrun
+Unable to handle changes during integration
+Unreliable product
+3 (Moderate) x 5 (Severe) = 15
+Use technologies that are known to work well together
+Consider testing
+Test-as-you-go approach
+Schedule Risks
+Some tasks are dependent on previous tasks
+Backlog of tasks
+Deadline delays
+Resource overrun
+Rushed product – affect the end-quality
+
+
+4 (Likely) x 3 (Significant)
+= 12
+Use management tools like Gantt Charts or Work Breakdown Structure and refer to it constantly
+Encourage collaboration between team members
+Follow phase deadlines
+Miss out on deadlines
+4 (Likely) x 3 (Significant)
+= 12
+Unrealistic scheduling
+2 (Unlikely) x 4 (Major)
+= 8
+Consider which tasks are heavy and break them down into manageable pieces
+Allocate tasks based on skills
+Use schedule management tools like Gantt charts or WBS
+Scope Risks
+Unclear understanding of requirements
+Resource and schedule overrun
+Stakeholder business objectives not met
+Result with a product with compromised quality
+Scope creep – the scope becomes unmanageable
+3 (Moderate) x 5 (Severe)
+= 15
+Make a detailed scope outline, which will be distributed to stakeholders
+Assess risks of adding specific requirements, especially considering the project’s current phase
+Constant monitoring of the project scope
+Adding too much requirements, leading to scope creep
+
+
+Improper planning of scope
+3 (Moderate) x 5 (Severe)
+= 15
+Identify potential problem areas to plan accordingly
+Follow a WBS
+Resource Risks
+Lack of resources
+Lack of confidence in producing a good product
+Schedule overrun
+Delayed deadlines
+Compromised quality of the product 
+2 (Unlikely) x 3 (Significant) = 6
+Let the stakeholders know of limitations 
+Assess areas to prioritise and reallocate resources accordingly
+Lack of skills
+2 (Unlikely) x 4 (Major) = 8 
+Let the stakeholders know of limitations
+Choose technologies, tools, and allocate tasks based on strengths
+Refer to the project scope and understand the requirements to choose the right technologies
+Use organisational charts to outline all the team’s skills
+Uneven distribution of tasks and resources
+Task backlog and delays
+Resource and schedule overrun
+Imbalance in team efforts
+3 (Moderate) x 4 (Major)
+=
+12
+
+
+
+Appendix
+Figure 1. Risk Matrix Guide
+
+
+
+9. References
+Kanbantool.com. (2026). Kanban Roles and Responsibilities | Kanban Tool. [online] Available at: https://kanbantool.com/kanban-guide/kanban-roles.  
+
+Radigan, D. (2024). What is kanban? [online] Atlassian. Available at: https://www.atlassian.com/agile/kanban. 
+
+Yeyati, E.L. and Seyal, I. (2025). Digital footprints and job matching: The new frontier of AI-driven hiring. [online] Brookings. Available at: https://www.brookings.edu/articles/digital-footprints-and-job-matching-the-new-frontier-of-ai-driven-hiring/. 
