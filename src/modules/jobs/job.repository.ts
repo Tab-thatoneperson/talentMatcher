@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { BaseRepository } from '../../common/db/repositories/base.repository';
 
-// ─── Document shape ───────────────────────────────────────────────────────────
-
 export interface JobRequiredSkill extends Record<string, unknown> {
   name: string;
   required: boolean;
@@ -16,17 +14,9 @@ export interface JobDocument extends Record<string, unknown> {
   description: string;
   companyId: string;
   companyName: string;
-  location: {
-    city: string;
-    country: string;
-    remote: boolean;
-  };
+  location: { city: string; country: string; remote: boolean };
   requiredSkills: JobRequiredSkill[];
-  salaryRange: {
-    min: number;
-    max: number;
-    currency: string;
-  };
+  salaryRange: { min: number; max: number; currency: string };
   employmentType: 'fulltime' | 'parttime' | 'contract';
   experienceLevel: 'junior' | 'mid' | 'senior' | 'lead';
   status: 'active' | 'closed' | 'draft';
@@ -34,8 +24,6 @@ export interface JobDocument extends Record<string, unknown> {
   expiresAt: string;
   createdAt: string;
 }
-
-// ─── Repository ───────────────────────────────────────────────────────────────
 
 @Injectable()
 export class JobRepository extends BaseRepository<JobDocument> {
@@ -47,18 +35,52 @@ export class JobRepository extends BaseRepository<JobDocument> {
     return this.search({
       nested: {
         path: 'requiredSkills',
-        query: {
-          terms: { 'requiredSkills.name': skillNames },
-        },
+        query: { terms: { 'requiredSkills.name': skillNames } },
       },
     });
   }
 
   findByCompany(companyId: string) {
-    return this.search({ term: { companyId } });
+    return this.search({ term: { companyId } }, 100);
   }
 
   findActive() {
-    return this.search({ term: { status: 'active' } });
+    return this.search({ term: { status: 'active' } }, 100);
+  }
+
+  fullTextSearch(q: string) {
+    return this.search(
+      {
+        multi_match: {
+          query: q,
+          fields: ['title', 'description', 'companyName'],
+        },
+      },
+      50,
+    );
+  }
+
+  async findRecommendationsForCandidate(
+    skillNames: string[],
+    limit = 10,
+  ): Promise<JobDocument[]> {
+    if (!skillNames.length) return this.findActive();
+    const result = await this.esService.search<JobDocument>({
+      index: this.index,
+      size: limit,
+      query: {
+        bool: {
+          must: [{ term: { status: 'active' } }],
+          should: skillNames.map((name) => ({
+            nested: {
+              path: 'requiredSkills',
+              query: { term: { 'requiredSkills.name': name } },
+            },
+          })),
+          minimum_should_match: 1,
+        },
+      },
+    });
+    return result.hits.hits.map((h) => h._source as JobDocument);
   }
 }
