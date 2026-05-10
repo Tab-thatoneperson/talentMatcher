@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Set Up - Employer</title>
+    <link rel="stylesheet" href="set-up-account.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div></div>
+      <p>IntelligentTalentMatchingPlatform</p>
+    </header>
+
+    <div class="container">
+      <div class="header-instructions">
+        <h1>Set up your profile</h1>
+        <p>Upload your resume so others can discover your profile</p>
+      </div>
+
+      <div class="input-container">
+        <!--MAIN FILE UPLOADER-->
+        <div class="upload-container" id="drop-area">
+          <input type="file" id="file-input" accept=".pdf,.docx" />
+          <div class="upload-instructions">
+            <img src="../assets/upload.png" alt="" id="upload-img" />
+            <div id="upload-text">
+              <p>
+                <b>Drag & Drop</b> or
+                <b
+                  ><label for="file-input" class="switch-link"
+                    >Choose file</label
+                  ></b
+                >
+                to upload
+              </p>
+              <p class="tiny-font">
+                supported formats: <b>docx</b>, <b>pdf</b>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--END: MAIN FILE UPLOADER-->
+
+        <!--OUTPUT FILE-->
+        <div class="output-container">
+          <div>
+            <img src="../assets/file.png" alt="" class="file-img" />
+            <p id="file-name">File</p>
+          </div>
+          <img src="../assets/cross.png" alt="" class="cross-img" />
+        </div>
+        <!--END: OUTPUT FILE-->
+      </div>
+
+      <div class="button-container">
+        <a class="skip-button" href=""><b>Skip</b></a>
+        <a id="button-click" class="continue-button" href="">
+          <b>Continue</b>
+        </a>
+      </div>
+    </div>
+
+    <script src="set-up-candidate.js"></script>
+  </body>
+</html>
