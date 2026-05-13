@@ -1,147 +1,161 @@
-# Talent Matcher — Backend
-
-Intelligent Talent Matching Platform backend built with NestJS and Elasticsearch.
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) v20+
-- [Docker](https://www.docker.com/) (for running Elasticsearch locally)
+# Intelligent Talent Matching Platform (ITMP)
+CSIT314 Group Project — Django + PostgreSQL
 
 ---
 
-## Getting started
+## Team Setup (do this once each)
 
-### 1. Install dependencies
-
+### 1. Clone the repo
 ```bash
-npm install
+git clone https://github.com/YOUR_TEAM/itmp.git
+cd itmp
 ```
 
-### 2. Configure environment
+### 2. Create a virtual environment
+```bash
+python -m venv venv
 
-Copy the example env file and adjust if needed:
+# Mac/Linux
+source venv/bin/activate
 
+# Windows
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set up environment variables
 ```bash
 cp .env.example .env
 ```
+Then open `.env` and fill in your local PostgreSQL credentials.
 
-The default `.env` points to `http://localhost:9200` with no auth, which matches the Docker setup below. No changes needed for local dev.
+### 5. Create the database
+Open pgAdmin (or psql) and create a database called `itmp_db` (or whatever you put in `.env`).
+
+### 6. Run migrations
+```bash
+python manage.py migrate
+```
+
+### 7. Create a superuser (optional, for admin panel)
+```bash
+python manage.py createsuperuser
+```
+
+### 8. Run the dev server
+```bash
+python manage.py runserver
+```
+Visit: http://127.0.0.1:8000
 
 ---
 
-## Running Elasticsearch
+## Git Workflow
 
-Elasticsearch runs via Docker. You do not need to install it locally.
-
-### Start
+**Never commit directly to `main`.** Always work on your own branch.
 
 ```bash
-docker compose up -d
+# Start new work
+git checkout main
+git pull origin main
+git checkout -b feature/your-feature-name
+
+# Save your work
+git add .
+git commit -m "Add job listing page"
+git push origin feature/your-feature-name
 ```
 
-This starts a single-node Elasticsearch 8.14 container with security disabled (local dev only). Data is persisted in a Docker volume (`es_data`) so it survives container restarts.
+Then open a Pull Request on GitHub for a teammate to review before merging.
 
-### Stop
-
-```bash
-docker compose down
-```
-
-### Wipe all data (fresh start)
-
-```bash
-docker compose down -v
-```
-
-### Check Elasticsearch is up
-
-```bash
-curl http://localhost:9200
-```
-
-You should see a JSON response with the cluster name and version.
-
----
-
-## Running the app
-
-### Option A — with Elasticsearch (recommended)
-
-Starts Docker ES in the background then launches NestJS in watch mode:
-
-```bash
-npm run dev:withES
-```
-
-### Option B — NestJS only (if ES is already running)
-
-```bash
-npm run start:dev
-```
-
-### Production build
-
-```bash
-npm run build
-npm run start:prod
-```
-
----
-
-## Startup logs
-
-On a successful boot you will see Elasticsearch confirm the connection:
-
-```
-[Elasticsearch] Connected to Elasticsearch 8.14.0 at <node-name>
-```
-
-If Elasticsearch is not reachable the app will throw on startup so the problem is visible immediately.
-
----
-
-## Project structure
-
-```
-src/
-├── common/
-│   ├── config/
-│   │   └── elasticsearch.config.ts     # reads env vars for ES connection
-│   └── db/
-│       ├── elasticsearch.module.ts      # global ES client module
-│       ├── elasticsearch-connection.service.ts  # logs connection on boot
-│       └── repositories/
-│           ├── base.repository.ts       # generic CRUD base class
-│           └── example.repository.ts   # example — copy this for new indices
-├── modules/                             # feature modules go here (candidates, jobs, …)
-└── app.module.ts
-docker-compose.yml
-.env.example
-```
-
----
-
-## Adding a new index / repository
-
-1. Create your feature folder under `src/modules/<feature>/`.
-2. Define a document interface extending `Record<string, unknown>`.
-3. Create `<feature>.repository.ts` extending `BaseRepository<YourDocument>` and pass the index name to `super()`.
-4. Add domain-specific query methods using `this.search()` or `this.esService` directly.
-5. Register the repository as a provider in your feature module.
-
-See `src/common/db/repositories/example.repository.ts` for a complete example.
-
----
-
-## npm scripts
-
-| Script | Description |
+### Branch naming
+| Type | Example |
 |---|---|
-| `npm run dev:withES` | Start ES via Docker then NestJS in watch mode |
-| `npm run dev:stop` | Stop the ES Docker container |
-| `npm run start:dev` | NestJS watch mode only (ES must already be running) |
-| `npm run build` | Compile TypeScript |
-| `npm run start:prod` | Run compiled production build |
-| `npm run test` | Unit tests |
-| `npm run test:e2e` | End-to-end tests |
-| `npm run lint` | Lint and auto-fix |
+| New page/feature | `feature/job-detail-page` |
+| Bug fix | `fix/login-redirect-error` |
+| Styling | `style/candidate-card-layout` |
+
+---
+
+## Project Structure
+
+```
+itmp/
+├── manage.py
+├── requirements.txt
+├── .env                  ← YOUR local secrets (never commit)
+├── .env.example          ← Template — commit this
+├── .gitignore
+├── itmp/                 ← Django config
+│   ├── settings.py
+│   └── urls.py
+├── accounts/             ← Login, Register, User model
+├── jobs/                 ← Job listings, Post job, Dashboards
+├── candidates/           ← Candidate list, Profile
+├── static/
+│   └── css/main.css      ← Global styles — edit here
+└── templates/
+    ├── base.html          ← Shared layout + navbar
+    ├── accounts/
+    ├── jobs/
+    ├── candidates/
+    └── employer/
+```
+
+---
+
+## Page → Template mapping
+
+| Page | Template | Owner |
+|---|---|---|
+| Login | `accounts/login.html` | Teammate |
+| Register Candidate | `accounts/register_candidate.html` | Teammate |
+| Register Employer | `accounts/register_employer.html` | Teammate |
+| Candidate Profile Setup | `accounts/candidate_setup.html` | Teammate |
+| Browse Jobs | `jobs/job_list.html` | Lucas |
+| Job Detail | `jobs/job_detail.html` | Lucas |
+| Post a Job | `jobs/post_job.html` | Lucas |
+| Browse Candidates | `candidates/candidate_list.html` | Lucas |
+| Candidate Profile | `candidates/candidate_profile.html` | Lucas |
+| Candidate Dashboard | `candidates/dashboard.html` | TBD |
+| Employer Dashboard | `employer/dashboard.html` | TBD |
+
+---
+
+## CSS Variables (main.css)
+
+All colours are set as CSS variables — change them in one place:
+
+| Variable | Value | Used for |
+|---|---|---|
+| `--green` | `#3BB54A` | Brand colour, buttons, links |
+| `--green-dark` | `#2e9e3b` | Button hover |
+| `--green-light` | `#e8f7ea` | Tag backgrounds, highlights |
+| `--text` | `#111111` | Body text |
+| `--text-muted` | `#666666` | Subtitles, labels |
+| `--border` | `#d0d0d0` | Card borders, inputs |
+| `--bg` | `#f2f2f2` | Page background |
+
+---
+
+## URLs
+
+| URL | View | Name |
+|---|---|---|
+| `/accounts/login/` | Login | `login` |
+| `/accounts/logout/` | Logout | `logout` |
+| `/accounts/register/candidate/` | Register Candidate | `register_candidate` |
+| `/accounts/register/employer/` | Register Employer | `register_employer` |
+| `/accounts/dashboard/` | Role-based redirect | `dashboard` |
+| `/jobs/` | Browse Jobs | `job_list` |
+| `/jobs/<pk>/` | Job Detail | `job_detail` |
+| `/jobs/<pk>/apply/` | Apply | `apply_job` |
+| `/jobs/post/` | Post a Job | `post_job` |
+| `/jobs/dashboard/candidate/` | Candidate Dashboard | `candidate_dashboard` |
+| `/jobs/dashboard/employer/` | Employer Dashboard | `employer_dashboard` |
+| `/candidates/` | Browse Candidates | `candidate_list` |
+| `/candidates/<pk>/` | Candidate Profile | `candidate_profile` |

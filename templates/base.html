@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Intelligent Talent Matching Platform{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="{% url 'job_list' %}" class="navbar-brand">Intelligent Talent Matching Platform</a>
+    <div class="navbar-links">
+      {% if user.is_authenticated %}
+        {% if user.is_candidate %}
+          <a href="{% url 'job_list' %}">Browse Jobs</a>
+          <a href="{% url 'candidate_dashboard' %}">Dashboard</a>
+        {% else %}
+          <a href="{% url 'candidate_list' %}">Browse Candidates</a>
+          <a href="{% url 'post_job' %}">Post a Job</a>
+          <a href="{% url 'employer_dashboard' %}">Dashboard</a>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="btn btn-outline">Log Out</a>
+      {% else %}
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'register_candidate' %}" class="btn">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main class="main-content">
+    {% if messages %}
+      <div class="messages-container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Intelligent Talent Matching Platform. All rights reserved.</p>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
