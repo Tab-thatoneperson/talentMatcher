@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talent Matcher - Browse Candidates</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-brand"><div class="brand-text">Intelligent talent matching platform</div></header>
+        <main class="main-content">
+            <section class="page-header">
+                <h1>Browse Candidates</h1>
+                <p>Find Talent for your open roles</p>
+            </section>
+
+            <section class="search-area">
+                <div class="input-group"><span class="icon">🔍</span><input type="text" placeholder="Skills, role or name"></div>
+                <div class="input-group"><span class="icon">📍</span><input type="text" placeholder="Location"></div>
+                <button class="btn btn-primary">Search</button>
+            </section>
+
+            <section class="filter-group">
+                <select class="filter-pill"><option>Availability</option></select>
+                <select class="filter-pill"><option>Experience</option></select>
+                <select class="filter-pill"><option>Skills</option></select>
+                <select class="filter-pill w-100"><option>Industry</option></select>
+            </section>
+
+            <div class="results-count">Showing 1-5 of 124 candidates</div>
+
+            <section class="item-list">
+                <!-- Candidate 1 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">JL</div>
+                        <div class="details">
+                            <h2>James Liu</h2>
+                            <p class="meta-text">Software engineer - Sydney, NSW</p>
+                            <div class="tag-group" style="margin-bottom: 6px;">
+                                <span class="tag tag-match">94% Match</span>
+                            </div>
+                            <div class="tag-group">
+                                <span class="tag tag-grey">Python</span>
+                                <span class="tag tag-grey">React</span>
+                                <span class="tag tag-grey">AWS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-row">
+                        <a href="#" class="text-link">View profile</a>
+                        <button class="btn btn-primary btn-sm">Contact</button>
+                    </div>
+                </div>
+
+                <!-- Candidate 2 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">SR</div>
+                        <div class="details">
+                            <h2>Sophie Rawlings</h2>
+                            <p class="meta-text">UX Designer - Melbourne, VIC</p>
+                            <div class="tag-group" style="margin-bottom: 6px;">
+                                <span class="tag tag-match">82% Match</span>
+                            </div>
+                            <div class="tag-group">
+                                <span class="tag tag-grey">Figma</span>
+                                <span class="tag tag-grey">UX Research</span>
+                                <span class="tag tag-grey">CSS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-row">
+                        <a href="#" class="text-link">View profile</a>
+                        <button class="btn btn-primary btn-sm">Contact</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="pagination">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn disabled">...</button>
+                <button class="page-btn">25</button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talent Matcher - Post a Job</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-brand"><div class="brand-text">Intelligent talent matching platform</div></header>
+        <main class="main-content">
+            <section class="page-header">
+                <h1>Post a Job</h1>
+                <p>Fill in the details to list your opening</p>
+            </section>
+
+            <form>
+                <h3 class="section-title">Job details</h3>
+                <div class="form-group">
+                    <label class="form-label">Job Title *</label>
+                    <input type="text" class="form-control" placeholder="e.g Software engineer">
+                </div>
+                
+                <div class="form-row form-group">
+                    <div class="form-col">
+                        <label class="form-label">Industry *</label>
+                        <select class="form-control"><option>Select...</option></select>
+                    </div>
+                    <div class="form-col">
+                        <label class="form-label">Job Type *</label>
+                        <select class="form-control"><option>Select...</option></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location *</label>
+                    <input type="text" class="form-control" placeholder="City, State">
+                </div>
+
+                <h3 class="section-title">Compensation</h3>
+                <div class="form-row form-group">
+                    <div class="form-col">
+                        <label class="form-label">Min Salary</label>
+                        <input type="text" class="form-control" placeholder="$">
+                    </div>
+                    <div class="form-col">
+                        <label class="form-label">Max Salary</label>
+                        <input type="text" class="form-control" placeholder="$">
+                    </div>
+                    <div class="form-col">
+                        <label class="form-label">Period</label>
+                        <select class="form-control"><option>1 year</option></select>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-salary">
+                    <label for="show-salary" class="checkbox-label">Show salary on listing</label>
+                </div>
+
+                <h3 class="section-title">Description & Requirements</h3>
+                <div class="form-group">
+                    <label class="form-label">Job Description *</label>
+                    <textarea class="form-control" placeholder="Describe the role and responsibilities..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Required Skills *</label>
+                    <input type="text" class="form-control" placeholder="Add skills and press Enter" style="margin-bottom: 10px;">
+                    <div class="tag-group">
+                        <span class="tag tag-grey">Python</span>
+                        <span class="tag tag-grey">SQL</span>
+                        <span class="tag tag-grey">Communication</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Experience Level *</label>
+                    <select class="form-control"><option>Select level...</option></select>
+                </div>
+
+                <h3 class="section-title">Application Settings</h3>
+                <div class="form-group">
+                    <label class="form-label">Application Deadline</label>
+                    <input type="date" class="form-control">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="one-click">
+                    <label for="one-click" class="checkbox-label">Allow candidates to apply with one click</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notify-email" checked>
+                    <label for="notify-email" class="checkbox-label">Notify me of new applications by email</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Post Job</button>
+                <a href="#" class="text-link text-center">Save as a Draft</a>
+            </form>
+        </main>
+    </div>
+</body>
+</html>
