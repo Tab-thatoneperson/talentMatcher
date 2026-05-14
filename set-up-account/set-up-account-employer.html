@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Set Up - Employer</title>
+    <link rel="stylesheet" href="set-up-account.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div></div>
+      <p>IntelligentTalentMatchingPlatform</p>
+    </header>
+
+    <div class="container">
+      <div class="header-instructions">
+        <h1>Set up your company profile</h1>
+        <p>Provide your details so others can discover your profile</p>
+      </div>
+
+      <div class="input-container">
+        <div>
+          <p>Industry</p>
+          <select name="" id="" class="fields">
+            <option value="">Select</option>
+            <option value="">Accounting</option>
+            <option value="">Education</option>
+            <option value="">Engineering</option>
+            <option value="">Healthcare</option>
+            <option value="">Information Technology</option>
+            <option value="">Marketing</option>
+            <option value="">Sales</option>
+            <option value="">Trades</option>
+          </select>
+          <div class="invalid-message">
+            <img src="../assets/attention-triangle.png" alt="" />
+            <p>Please choose an industry</p>
+          </div>
+        </div>
+
+        <div>
+          <p>Company Details</p>
+          <textarea name="" id="" class="fields"></textarea>
+          <div class="invalid-message">
+            <img src="../assets/attention-triangle.png" alt="" />
+            <p>Please enter your company details</p>
+          </div>
+        </div>
+      </div>
+
+      <a id="button-click" class="continue-button" href="#"><b>Continue</b></a>
+    </div>
+
+    <script src="set-up-employer.js"></script>
+  </body>
+</html>
