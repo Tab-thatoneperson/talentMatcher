@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talent Matcher - Browse Candidates</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-brand"><div class="brand-text">Intelligent talent matching platform</div></header>
+        <main class="main-content">
+            <section class="page-header">
+                <h1>Browse Candidates</h1>
+                <p>Find Talent for your open roles</p>
+            </section>
+
+            <!-- Search Area with IDs added for JavaScript -->
+            <section class="search-area">
+                <div class="input-group">
+                    <span class="icon">🔍</span>
+                    <input type="text" id="keyword-search" placeholder="Skills, role or name">
+                </div>
+                <div class="input-group">
+                    <span class="icon">📍</span>
+                    <input type="text" id="location-search" placeholder="Location">
+                </div>
+                <button class="btn btn-primary" id="search-btn">Search</button>
+            </section>
+
+            <!-- Filters with real values added for JavaScript -->
+            <section class="filter-group">
+                <select class="filter-pill" id="filter-experience">
+                    <option value="">Any Experience</option>
+                    <option value="junior">Junior</option>
+                    <option value="mid-level">Mid-level</option>
+                    <option value="senior">Senior</option>
+                </select>
+                <select class="filter-pill" id="filter-availability">
+                    <option value="">Availability</option>
+                    <option value="immediate">Immediate</option>
+                    <option value="notice">2 Weeks Notice</option>
+                </select>
+            </section>
+
+            <div class="results-count" id="results-text">Showing candidates</div>
+
+            <!-- Candidate List -->
+            <section class="item-list" id="candidate-list">
+                <!-- Candidate 1 -->
+                <div class="card candidate-card" data-experience="mid-level" data-availability="immediate">
+                    <div class="card-header">
+                        <div class="avatar">JL</div>
+                        <div class="details">
+                            <h2 class="candidate-name">James Liu</h2>
+                            <p class="meta-text candidate-role">Mid-level Software engineer - Sydney, NSW</p>
+                            <div class="tag-group" style="margin-bottom: 6px;">
+                                <span class="tag tag-match">94% Match</span>
+                            </div>
+                            <div class="tag-group candidate-skills">
+                                <span class="tag tag-grey">Python</span>
+                                <span class="tag tag-grey">React</span>
+                                <span class="tag tag-grey">AWS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-row">
+                        <a href="#" class="text-link">View profile</a>
+                        <button class="btn btn-primary btn-sm">Contact</button>
+                    </div>
+                </div>
+
+                <!-- Candidate 2 -->
+                <div class="card candidate-card" data-experience="senior" data-availability="notice">
+                    <div class="card-header">
+                        <div class="avatar">SR</div>
+                        <div class="details">
+                            <h2 class="candidate-name">Sophie Rawlings</h2>
+                            <p class="meta-text candidate-role">Senior UX Designer - Melbourne, VIC</p>
+                            <div class="tag-group" style="margin-bottom: 6px;">
+                                <span class="tag tag-match">82% Match</span>
+                            </div>
+                            <div class="tag-group candidate-skills">
+                                <span class="tag tag-grey">Figma</span>
+                                <span class="tag tag-grey">UX Research</span>
+                                <span class="tag tag-grey">CSS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-row">
+                        <a href="#" class="text-link">View profile</a>
+                        <button class="btn btn-primary btn-sm">Contact</button>
+                    </div>
+                </div>
+
+                <!-- Candidate 3 (Added to show off filtering) -->
+                <div class="card candidate-card" data-experience="junior" data-availability="immediate">
+                    <div class="card-header">
+                        <div class="avatar">AC</div>
+                        <div class="details">
+                            <h2 class="candidate-name">Alex Chen</h2>
+                            <p class="meta-text candidate-role">Junior Data Analyst - Brisbane, QLD</p>
+                            <div class="tag-group" style="margin-bottom: 6px;">
+                                <span class="tag tag-match">75% Match</span>
+                            </div>
+                            <div class="tag-group candidate-skills">
+                                <span class="tag tag-grey">SQL</span>
+                                <span class="tag tag-grey">Excel</span>
+                                <span class="tag tag-grey">Python</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions-row">
+                        <a href="#" class="text-link">View profile</a>
+                        <button class="btn btn-primary btn-sm">Contact</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script to handle dynamic filtering and searching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const keywordInput = document.getElementById('keyword-search');
+            const locationInput = document.getElementById('location-search');
+            const experienceFilter = document.getElementById('filter-experience');
+            const availabilityFilter = document.getElementById('filter-availability');
+            const searchBtn = document.getElementById('search-btn');
+            const candidateCards = document.querySelectorAll('.candidate-card');
+            const resultsText = document.getElementById('results-text');
+
+            function filterCandidates() {
+                const keyword = keywordInput.value.toLowerCase().trim();
+                const location = locationInput.value.toLowerCase().trim();
+                const experience = experienceFilter.value;
+                const availability = availabilityFilter.value;
+
+                let visibleCount = 0;
+
+                candidateCards.forEach(card => {
+                    // Get data from the card
+                    const textContent = card.innerText.toLowerCase();
+                    const cardExp = card.getAttribute('data-experience');
+                    const cardAvail = card.getAttribute('data-availability');
+
+                    // 1. Keyword Match (Checks name, role, and skills text)
+                    const matchesKeyword = keyword === '' || textContent.includes(keyword);
+                    
+                    // 2. Location Match
+                    const matchesLocation = location === '' || textContent.includes(location);
+
+                    // 3. Dropdown Filters (Combo checking)
+                    const matchesExperience = experience === '' || cardExp === experience;
+                    const matchesAvailability = availability === '' || cardAvail === availability;
+
+                    // If it passes ALL the active filters, show it. Otherwise, hide it.
+                    if (matchesKeyword && matchesLocation && matchesExperience && matchesAvailability) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Update the counter text
+                resultsText.innerText = `Showing ${visibleCount} candidate${visibleCount !== 1 ? 's' : ''}`;
+            }
+
+            // Listen for typing in the keyword box (instant search)
+            keywordInput.addEventListener('input', filterCandidates);
+            locationInput.addEventListener('input', filterCandidates);
+            
+            // Listen for dropdown changes (combo filter)
+            experienceFilter.addEventListener('change', filterCandidates);
+            availabilityFilter.addEventListener('change', filterCandidates);
+
+            // Listen for the specific "Search" button click
+            searchBtn.addEventListener('click', filterCandidates);
+        });
+    </script>
+</body>
+</html>
