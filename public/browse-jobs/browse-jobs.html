@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talent Matcher - Browse Jobs</title>
+    <link rel="stylesheet" href="../assets/css/shared.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-brand">
+            <div class="brand-text">Intelligent talent matching platform</div>
+            <nav class="top-nav">
+                <span class="nav-link nav-active">Browse Jobs</span>
+                <a href="../manage-profile/manage-profile.html" class="nav-link">My Profile</a>
+                <a href="#" class="nav-link nav-logout" onclick="clearSession();window.location.href='/login/login-candidate.html';return false;">Log out</a>
+            </nav>
+        </header>
+        <main class="main-content">
+            <section class="page-header">
+                <h1>Browse Jobs</h1>
+                <p>Find your next opportunity</p>
+            </section>
+
+            <!-- Resume gate — shown instead of content when candidate has no skills -->
+            <div id="profile-gate" style="display:none;">
+                <div class="gate-card">
+                    <div class="gate-icon">📄</div>
+                    <h2>Upload your resume first</h2>
+                    <p>We need your skills to show relevant jobs and personalised recommendations.<br>It only takes a minute.</p>
+                    <a href="../set-up-account/set-up-account-candidate.html" class="btn btn-primary" style="display:inline-block;margin-top:16px;padding:10px 28px;text-decoration:none;">Upload Resume</a>
+                </div>
+            </div>
+
+            <div id="browse-content">
+                <section class="search-area">
+                    <div class="input-group"><span class="icon">🔍</span><input id="search-input" type="text" placeholder="Job title, keyword or skill"></div>
+                    <div class="input-group"><span class="icon">📍</span><input id="location-input" type="text" placeholder="City or country"></div>
+                    <button id="search-btn" class="btn btn-primary">Search</button>
+                    <button id="recommend-btn" class="btn btn-recommend">&#9733; Recommended for me</button>
+                </section>
+
+                <section class="filter-group">
+                    <select id="filter-type" class="filter-pill">
+                        <option value="">Job type</option>
+                        <option value="fulltime">Full-time</option>
+                        <option value="parttime">Part-time</option>
+                        <option value="contract">Contract</option>
+                    </select>
+                    <select id="filter-industry" class="filter-pill">
+                        <option value="">Industry</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Education">Education</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select id="filter-salary" class="filter-pill">
+                        <option value="">Salary</option>
+                        <option value="0-50000">Under $50k</option>
+                        <option value="50000-100000">$50k – $100k</option>
+                        <option value="100000-150000">$100k – $150k</option>
+                        <option value="150000-999999">$150k+</option>
+                    </select>
+                    <select id="filter-experience" class="filter-pill">
+                        <option value="">Experience</option>
+                        <option value="junior">Junior</option>
+                        <option value="mid">Mid</option>
+                        <option value="senior">Senior</option>
+                        <option value="lead">Lead</option>
+                    </select>
+                </section>
+
+                <div class="results-bar">
+                    <span id="results-count" class="results-count"></span>
+                    <button id="clear-filters" class="clear-btn" style="display:none;">✕ Clear filters</button>
+                </div>
+
+                <section id="jobs-list" class="item-list">
+                    <p style="text-align:center;color:#666;padding:20px;">Loading jobs...</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
+    <script src="browse-jobs.js"></script>
+</body>
+</html>

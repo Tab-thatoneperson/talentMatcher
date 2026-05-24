@@ -40,6 +40,12 @@ export class CreateJobDto {
   @ApiPropertyOptional({ enum: ['junior', 'mid', 'senior', 'lead'], example: 'senior' })
   experienceLevel?: string;
 
+  @ApiPropertyOptional({
+    enum: ['Technology', 'Finance', 'Healthcare', 'Education', 'Marketing', 'Engineering', 'Sales', 'Other'],
+    example: 'Technology',
+  })
+  industry?: string;
+
   @ApiPropertyOptional({ enum: ['active', 'closed', 'draft'], example: 'active' })
   status?: string;
 

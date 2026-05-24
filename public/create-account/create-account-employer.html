@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register Account - Candidate</title>
+    <title>Register Account - Employer</title>
     <link rel="stylesheet" href="create-account.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,16 +19,16 @@
       <p>IntelligentTalentMatchingPlatform</p>
     </header>
 
-    <div class="container">
+    <div class="container" data-page-type="employer">
       <div class="header-instructions">
         <h1>Register</h1>
         <p>Enter a valid email and create a password to continue</p>
       </div>
 
       <p>
-        <b>Are you an employer?</b> Register
+        <b>Are you looking for a job?</b> Register
         <b
-          ><a href="create-account-employer.html" class="switch-link"
+          ><a href="create-account-candidate.html" class="switch-link"
             >here</a
           ></b
         >.
@@ -40,7 +40,7 @@
         <div class="fname-lname-container">
           <div>
             <p>First Name</p>
-            <input type="text" />
+            <input id="first-name-input" type="text" />
             <div class="invalid-message">
               <img src="../assets/attention-triangle.png" alt="" />
               <p>Please enter a valid first name</p>
@@ -48,7 +48,7 @@
           </div>
           <div>
             <p>Last Name</p>
-            <input type="text" />
+            <input id="last-name-input" type="text" />
             <div class="invalid-message">
               <img src="../assets/attention-triangle.png" alt="" />
               <p>Please enter a valid last name</p>
@@ -57,8 +57,17 @@
         </div>
 
         <div>
+          <p>Company Name</p>
+          <input id="company-name-input" type="text" />
+          <div class="invalid-message">
+            <img src="../assets/attention-triangle.png" alt="" />
+            <p>Please enter a valid company name</p>
+          </div>
+        </div>
+
+        <div>
           <p>Email Address</p>
-          <input type="text" />
+          <input id="email-input" type="text" />
           <div class="invalid-message">
             <img src="../assets/attention-triangle.png" alt="" />
             <p>Please enter a valid email address</p>
@@ -102,10 +111,10 @@
 
         <div>
           <p>Confirm Password</p>
-          <input type="password" />
+          <input id="confirm-password-input" type="password" />
           <div class="invalid-message">
             <img src="../assets/attention-triangle.png" alt="" />
-            <p>Password is invalid</p>
+            <p>Passwords do not match</p>
           </div>
         </div>
 
@@ -115,17 +124,20 @@
         </div>
       </div>
 
-      <a id="button-click" href="../set-up-account/set-up-account-candidate.html"><b>Register</b></a>
+      <div id="register-error" style="color:#721c24;background:#fff0f0;border:1px solid #f5c6cb;border-radius:4px;padding:8px 12px;font-size:13px;margin-bottom:8px;display:none;"></div>
+      <a id="button-click" href="#"><b>Register</b></a>
 
       <div class="divider"></div>
 
       <p>
         Already have an account? Sign in
-        <b><a href="../login/login-candidate.html" class="switch-link">here</a></b
+        <b><a href="../login/login-employer.html" class="switch-link">here</a></b
         >.
       </p>
     </div>
 
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
     <script src="create-account.js"></script>
   </body>
 </html>
