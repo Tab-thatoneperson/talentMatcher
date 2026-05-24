@@ -37,6 +37,8 @@ export interface CandidateDocument extends Record<string, unknown> {
   experience: CandidateExperience[];
   education: CandidateEducation[];
   availability: 'immediate' | '2weeks' | '1month';
+  experienceLevel?: 'junior' | 'mid' | 'senior' | 'lead';
+  industryPreference?: string;
   preferredJobTypes: ('fulltime' | 'parttime' | 'contract' | 'remote')[];
   salaryExpectation: { min: number; max: number; currency: string };
   createdAt: string;
@@ -114,9 +116,42 @@ export class CandidateRepository extends BaseRepository<CandidateDocument> {
   fullTextSearch(q: string) {
     return this.search(
       {
-        multi_match: {
-          query: q,
-          fields: ['firstName', 'lastName', 'summary'],
+        bool: {
+          should: [
+            {
+              multi_match: {
+                query: q,
+                fields: ['firstName^3', 'lastName^3', 'summary^2', 'industryPreference'],
+                fuzziness: 'AUTO',
+                prefix_length: 1,
+                operator: 'or',
+              },
+            },
+            {
+              nested: {
+                path: 'skills',
+                query: {
+                  match: {
+                    'skills.name': { query: q, fuzziness: 'AUTO', prefix_length: 1 },
+                  },
+                },
+              },
+            },
+            {
+              nested: {
+                path: 'experience',
+                query: {
+                  multi_match: {
+                    query: q,
+                    fields: ['experience.title^2', 'experience.company'],
+                    fuzziness: 'AUTO',
+                    prefix_length: 1,
+                  },
+                },
+              },
+            },
+          ],
+          minimum_should_match: 1,
         },
       },
       50,

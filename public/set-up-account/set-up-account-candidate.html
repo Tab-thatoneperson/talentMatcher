@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Set Up - Employer</title>
+    <title>Account Set Up - Candidate</title>
     <link rel="stylesheet" href="set-up-account.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -60,14 +60,18 @@
         <!--END: OUTPUT FILE-->
       </div>
 
+      <div id="upload-error" style="color:#721c24;background:#fff0f0;border:1px solid #f5c6cb;border-radius:4px;padding:8px 12px;font-size:13px;margin-bottom:8px;display:none;"></div>
+
       <div class="button-container">
-        <a class="skip-button" href=""><b>Skip</b></a>
-        <a id="button-click" class="continue-button" href="">
+        <a class="skip-button" href="#"><b>Skip</b></a>
+        <a id="button-click" class="continue-button" href="#">
           <b>Continue</b>
         </a>
       </div>
     </div>
 
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
     <script src="set-up-candidate.js"></script>
   </body>
 </html>

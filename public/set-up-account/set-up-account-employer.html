@@ -28,7 +28,7 @@
       <div class="input-container">
         <div>
           <p>Industry</p>
-          <select name="" id="" class="fields">
+          <select id="industry-select" class="fields">
             <option value="">Select</option>
             <option value="">Accounting</option>
             <option value="">Education</option>
@@ -47,7 +47,7 @@
 
         <div>
           <p>Company Details</p>
-          <textarea name="" id="" class="fields"></textarea>
+          <textarea id="company-details" class="fields"></textarea>
           <div class="invalid-message">
             <img src="../assets/attention-triangle.png" alt="" />
             <p>Please enter your company details</p>
@@ -55,9 +55,12 @@
         </div>
       </div>
 
+      <div id="setup-error" style="color:#721c24;background:#fff0f0;border:1px solid #f5c6cb;border-radius:4px;padding:8px 12px;font-size:13px;margin-bottom:8px;display:none;"></div>
       <a id="button-click" class="continue-button" href="#"><b>Continue</b></a>
     </div>
 
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
     <script src="set-up-employer.js"></script>
   </body>
 </html>

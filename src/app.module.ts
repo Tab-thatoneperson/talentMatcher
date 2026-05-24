@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AppElasticsearchModule } from './common/db/elasticsearch.module';
 import { LlmModule } from './common/llm/llm.module';
 import elasticsearchConfig from './common/config/elasticsearch.config';
@@ -18,6 +19,12 @@ import { CompaniesModule } from './modules/companies/companies.module';
       load: [elasticsearchConfig],
       envFilePath: '.env',
     }),
+    // Serve the public/ folder at the root URL.
+    // API routes (/auth, /jobs, etc.) take priority over static files.
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/',
+    }),
     AppElasticsearchModule,
     LlmModule,
     AuthModule,
@@ -27,6 +34,5 @@ import { CompaniesModule } from './modules/companies/companies.module';
     CompaniesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -1,0 +1,37 @@
+services:
+
+  # ── NestJS app ────────────────────────────────────────────────────────────
+  app:
+    build: .
+    container_name: talent_matcher_app
+    ports:
+      - "3000:3000"
+    env_file: .env                          # JWT_SECRET, GEMINI_API_KEY, PORT
+    environment:
+      - NODE_ENV=production
+      - ELASTICSEARCH_NODE=http://elasticsearch:9200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── Elasticsearch ─────────────────────────────────────────────────────────
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
+    container_name: talent_matcher_es
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      # Reduced heap for t2.micro (1 GB RAM). Increase on larger instances.
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  es_data:
