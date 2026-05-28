@@ -14,6 +14,7 @@ export interface JobDocument extends Record<string, unknown> {
   description: string;
   companyId: string;
   companyName: string;
+  industry: string;
   location: { city: string; country: string; remote: boolean };
   requiredSkills: JobRequiredSkill[];
   salaryRange: { min: number; max: number; currency: string };
@@ -51,9 +52,36 @@ export class JobRepository extends BaseRepository<JobDocument> {
   fullTextSearch(q: string) {
     return this.search(
       {
-        multi_match: {
-          query: q,
-          fields: ['title', 'description', 'companyName'],
+        bool: {
+          should: [
+            {
+              multi_match: {
+                query: q,
+                fields: [
+                  'title^4',
+                  'industry^3',
+                  'companyName^2',
+                  'description',
+                  'location.city^2',
+                  'location.country',
+                ],
+                fuzziness: 'AUTO',
+                prefix_length: 1,
+                operator: 'or',
+              },
+            },
+            {
+              nested: {
+                path: 'requiredSkills',
+                query: {
+                  match: {
+                    'requiredSkills.name': { query: q, fuzziness: 'AUTO', prefix_length: 1 },
+                  },
+                },
+              },
+            },
+          ],
+          minimum_should_match: 1,
         },
       },
       50,
