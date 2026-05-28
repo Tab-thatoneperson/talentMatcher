@@ -32,6 +32,7 @@ export interface CandidateDocument extends Record<string, unknown> {
   firstName: string;
   lastName: string;
   location: { city: string; country: string };
+  preferredLocation: { city: string; country: string };
   summary: string;
   skills: CandidateSkill[];
   experience: CandidateExperience[];
@@ -161,6 +162,17 @@ export class CandidateRepository extends BaseRepository<CandidateDocument> {
         must: [
           { term: { 'location.city': city } },
           { term: { 'location.country': country } },
+        ],
+      },
+    });
+  }
+
+  findByPreferredLocation(city: string, country: string) {
+    return this.search({
+      bool: {
+        must: [
+          { term: { 'preferredLocation.city': city } },
+          { term: { 'preferredLocation.country': country } },
         ],
       },
     });

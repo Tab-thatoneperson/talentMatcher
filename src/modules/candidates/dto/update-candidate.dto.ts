@@ -37,6 +37,7 @@ export class UpdateCandidateDto {
   @ApiPropertyOptional({ example: 'John' }) firstName?: string;
   @ApiPropertyOptional({ example: 'Doe' }) lastName?: string;
   @ApiPropertyOptional({ type: LocationDto }) location?: LocationDto;
+  @ApiPropertyOptional({ type: LocationDto }) preferredLocation?: LocationDto;
   @ApiPropertyOptional({ example: 'Experienced full-stack developer' }) summary?: string;
   @ApiPropertyOptional({ type: [SkillDto] }) skills?: SkillDto[];
   @ApiPropertyOptional({ type: [ExperienceDto] }) experience?: ExperienceDto[];

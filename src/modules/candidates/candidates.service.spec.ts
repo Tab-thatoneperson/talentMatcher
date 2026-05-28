@@ -12,6 +12,7 @@ const mockCandidate = {
   firstName: 'John',
   lastName: 'Doe',
   location: { city: 'Sydney', country: 'Australia' },
+  preferredLocation: { city: 'Sydney', country: 'Australia' },
   summary: 'A developer',
   skills: [{ name: 'TypeScript', proficiencyLevel: 4, yearsOfExperience: 3 }],
   experience: [],
