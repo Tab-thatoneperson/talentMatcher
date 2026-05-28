@@ -162,7 +162,10 @@ input:focus {
   cursor: pointer;
   display: flex;
   justify-content: center;
-  text-decoration: none;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  appearance: none;
 }
 
 #button-click:hover {
