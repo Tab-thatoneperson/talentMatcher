@@ -93,6 +93,15 @@ header p {
 }
 
 
+.skip-button,
+.continue-button,
+#button-click {
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  appearance: none;
+}
+
 .skip-button {
   border: 1px solid #008000;
   background-color: #ffffff;
