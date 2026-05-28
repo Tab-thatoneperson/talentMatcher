@@ -2,7 +2,7 @@ const inputList   = document.querySelectorAll('input');
 const buttonClick = document.querySelector('#button-click');
 const errorBanner = document.querySelector('#login-error');
 
-buttonClick.addEventListener('click', async function () {
+async function doLogin() {
   let hasError = false;
 
   for (let i = 0; i < inputList.length; i++) {
@@ -42,4 +42,9 @@ buttonClick.addEventListener('click', async function () {
     buttonClick.style.opacity       = '';
     buttonClick.style.pointerEvents = '';
   }
+}
+
+buttonClick.addEventListener('click', doLogin);
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') doLogin();
 });
