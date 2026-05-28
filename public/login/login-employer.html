@@ -36,7 +36,7 @@
       <div class="input-container">
         <div>
           <p>Email Address</p>
-          <input id="email-input" type="text" />
+          <input id="email-input" type="email" autocomplete="email" />
           <div class="invalid-message">
             <img src="../assets/attention-triangle.png" alt="" />
             <p>Please enter a valid email address</p>
@@ -45,11 +45,11 @@
 
         <div>
           <p>Password</p>
-          <input type="password" id="password-field"/>
+          <input type="password" id="password-field" autocomplete="current-password" />
           <div class="pw-message">
             <div class="invalid-message">
               <img src="../assets/attention-triangle.png" alt="" />
-              <p>Passwords do not match</p>
+              <p>Please enter your password</p>
             </div>
             <p><a href="">Forgot password?</a></p>
           </div>
@@ -57,7 +57,7 @@
       </div>
 
       <div id="login-error" style="color:#721c24;background:#fff0f0;border:1px solid #f5c6cb;border-radius:4px;padding:8px 12px;font-size:13px;margin-bottom:8px;display:none;"></div>
-      <a id="button-click"><b>Log In</b></a>
+      <button id="button-click"><b>Log In</b></button>
 
       <div class="divider"></div>
 
