@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talent Matcher - Manage Profile</title>
-    <!-- Links to your existing stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- A few specific styles just for the profile page -->
+    <link rel="stylesheet" href="../assets/css/shared.css">
     <style>
         .profile-photo-section {
             display: flex;
@@ -30,105 +27,89 @@
             cursor: pointer;
             transition: border-color 0.2s;
         }
-        .upload-box:hover {
-            border-color: #008000;
-        }
-        .upload-icon {
-            font-size: 20px;
-            margin-bottom: 5px;
-            display: block;
-        }
-        .upload-text {
-            font-size: 13px;
-            color: #666;
-        }
+        .upload-box:hover { border-color: #008000; }
+        .upload-icon { font-size: 20px; margin-bottom: 5px; display: block; }
+        .upload-text { font-size: 13px; color: #666; }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Brand Header -->
         <header class="top-brand">
             <div class="brand-text">Intelligent talent matching platform</div>
+            <nav class="top-nav">
+                <a href="../browse-jobs/browse-jobs.html" class="nav-link">Browse Jobs</a>
+                <span class="nav-link nav-active">My Profile</span>
+                <a href="#" class="nav-link nav-logout" onclick="clearSession();window.location.href='/login/login-candidate.html';return false;">Log out</a>
+            </nav>
         </header>
 
         <main class="main-content">
-            <!-- Page Header -->
             <section class="page-header">
                 <h1>Manage Profile</h1>
                 <p>Update your personal and professional details</p>
             </section>
 
-            <form>
-                <!-- Profile Photo -->
+            <div id="form-error" class="api-error"></div>
+            <div id="form-success" class="api-success">Profile saved successfully!</div>
+
+            <form id="manage-profile-form">
                 <div class="profile-photo-section">
-                    <div class="avatar avatar-lg">JD</div>
+                    <div id="avatar-display" class="avatar avatar-lg">?</div>
                     <a href="#" class="text-link">Upload new photo</a>
                 </div>
 
-                <!-- Personal Information -->
                 <h3 class="section-title">Personal Information</h3>
-                
+
                 <div class="form-row form-group">
                     <div class="form-col">
                         <label class="form-label">First Name *</label>
-                        <input type="text" class="form-control" value="John">
+                        <input id="first-name" type="text" class="form-control">
                     </div>
                     <div class="form-col">
                         <label class="form-label">Last Name *</label>
-                        <input type="text" class="form-control" value="Doe">
+                        <input id="last-name" type="text" class="form-control">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Email Address *</label>
-                    <input type="email" class="form-control" value="john.doe@example.com">
+                    <label class="form-label">Email Address</label>
+                    <input id="profile-email" type="email" class="form-control" readonly style="background:#f5f5f5;">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" placeholder="+61 400 000 000">
+                    <input id="phone-number" type="tel" class="form-control" placeholder="+61 400 000 000">
                 </div>
 
-                <!-- Professional Details -->
                 <h3 class="section-title">Professional Details</h3>
 
                 <div class="form-group">
-                    <label class="form-label">Current Role / Headline</label>
-                    <input type="text" class="form-control" value="Senior Software Engineer">
-                </div>
-
-                <div class="form-group">
                     <label class="form-label">Location</label>
-                    <input type="text" class="form-control" value="Sydney, NSW">
+                    <input id="profile-location" type="text" class="form-control" placeholder="City, Country">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">About Me / Bio</label>
-                    <textarea class="form-control" placeholder="Write a short bio about your experience and goals...">Passionate software engineer with 5+ years of experience building scalable web applications.</textarea>
+                    <textarea id="bio" class="form-control" placeholder="Write a short bio about your experience and goals..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Skills</label>
-                    <input type="text" class="form-control" placeholder="Type a skill and press Enter" style="margin-bottom: 10px;">
-                    <div class="tag-group">
-                        <span class="tag tag-grey">JavaScript</span>
-                        <span class="tag tag-grey">React</span>
-                        <span class="tag tag-grey">Node.js</span>
-                        <span class="tag tag-grey">AWS</span>
-                    </div>
+                    <input id="skills-input" type="text" class="form-control" placeholder="Type a skill and press Enter" style="margin-bottom: 10px;">
+                    <div id="skills-tags" class="tag-group"></div>
                 </div>
 
-                <!-- Resume Upload -->
                 <h3 class="section-title">Resume / CV</h3>
                 <div class="form-group">
-                    <div class="upload-box">
+                    <div id="resume-drop-area" class="upload-box">
                         <span class="upload-icon">📄</span>
                         <div class="upload-text">Drag and drop your resume here or <strong>browse</strong></div>
                         <div class="upload-text" style="font-size: 11px; margin-top: 5px;">Supported formats: PDF, DOCX (Max 5MB)</div>
+                        <input id="resume-file-input" type="file" accept=".pdf,.docx" style="display:none;">
                     </div>
+                    <div id="resume-status" style="font-size:12px;color:#666;margin-top:6px;"></div>
                 </div>
 
-                <!-- Privacy Settings -->
                 <h3 class="section-title">Privacy Settings</h3>
                 <div class="checkbox-group">
                     <input type="checkbox" id="profile-visible" checked>
@@ -140,11 +121,14 @@
                 </div>
 
                 <br>
-                <!-- Actions -->
                 <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
-                <a href="#" class="text-link text-center" style="color: #666;">Cancel</a>
+                <a href="../browse-jobs/browse-jobs.html" class="text-link text-center" style="color: #666;">Cancel</a>
             </form>
         </main>
     </div>
+
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
+    <script src="manage-profile.js"></script>
 </body>
 </html>

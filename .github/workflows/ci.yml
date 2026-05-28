@@ -1,0 +1,58 @@
+name: CI/CD — TalentMatcher
+
+on:
+  workflow_dispatch:  # dormant — trigger manually when ready to deploy
+
+jobs:
+  # ── CI: lint + unit tests ──────────────────────────────────────────────────
+  test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test -- --passWithNoTests
+
+  # ── CD: deploy to AWS EC2 ──────────────────────────────────────────────────
+  deploy:
+    name: Deploy to EC2
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH → pull & restart
+        uses: appleboy/ssh-action@v1
+        with:
+          host:     ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key:      ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /opt/talentmatcher
+
+            echo "── pulling latest code ──"
+            git pull origin main
+
+            echo "── rebuilding and restarting containers ──"
+            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+
+            echo "── pruning old images ──"
+            docker image prune -f
+
+            echo "── deploy complete ──"
+            docker compose -f docker-compose.prod.yml ps

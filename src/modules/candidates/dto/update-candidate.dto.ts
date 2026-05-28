@@ -43,6 +43,10 @@ export class UpdateCandidateDto {
   @ApiPropertyOptional({ type: [EducationDto] }) education?: EducationDto[];
   @ApiPropertyOptional({ enum: ['immediate', '2weeks', '1month'], example: 'immediate' })
   availability?: string;
+  @ApiPropertyOptional({ enum: ['junior', 'mid', 'senior', 'lead'], example: 'mid' })
+  experienceLevel?: string;
+  @ApiPropertyOptional({ example: 'Technology' })
+  industryPreference?: string;
   @ApiPropertyOptional({ enum: ['fulltime', 'parttime', 'contract', 'remote'], isArray: true })
   preferredJobTypes?: string[];
   @ApiPropertyOptional({ type: SalaryExpectationDto }) salaryExpectation?: SalaryExpectationDto;

@@ -44,6 +44,7 @@ export class JobsService {
       description: (dto.description as string) ?? '',
       companyId,
       companyName,
+      industry: (dto.industry as string) ?? '',
       location: (dto.location as JobDocument['location']) ?? {
         city: '',
         country: '',

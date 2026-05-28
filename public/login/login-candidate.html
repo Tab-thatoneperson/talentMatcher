@@ -28,7 +28,7 @@
       <div class="input-container">
         <div>
           <p>Email Address</p>
-          <input type="text" />
+          <input id="email-input" type="text" />
           <div class="invalid-message">
             <img src="../assets/attention-triangle.png" alt="" />
             <p>Please enter a valid email address</p>
@@ -48,7 +48,8 @@
         </div>
       </div>
 
-      <a id="button-click"><b>Log in</b></a>
+      <div id="login-error" style="color:#721c24;background:#fff0f0;border:1px solid #f5c6cb;border-radius:4px;padding:8px 12px;font-size:13px;margin-bottom:8px;display:none;"></div>
+      <a id="button-click"><b>Log In</b></a>
 
       <div class="divider"></div>
 
@@ -63,6 +64,8 @@
         >.
       </p>
     </div>
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
     <script src="login.js"></script>
   </body>
 </html>
