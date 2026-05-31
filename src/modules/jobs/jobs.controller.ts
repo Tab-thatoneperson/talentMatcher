@@ -50,7 +50,10 @@ export class JobsController {
 
   @Get('recommendations')
   @JwtAuth('candidate')
-  @ApiOperation({ summary: '[Candidate] Get top 10 job recommendations based on profile skills' })
+  @ApiOperation({
+    summary:
+      '[Candidate] Get top 10 job recommendations based on profile skills',
+  })
   @ApiResponse({ status: 200, description: 'Top 10 recommended jobs.' })
   @ApiResponse({ status: 404, description: 'Candidate profile not found.' })
   getRecommendations(@CurrentUser() user: JwtPayload) {
@@ -67,8 +70,14 @@ export class JobsController {
 
   @Get(':id/recommendations')
   @JwtAuth('employer')
-  @ApiOperation({ summary: '[Employer] Get top 10 candidate recommendations for a job listing' })
-  @ApiResponse({ status: 200, description: 'Top 10 recommended candidates (no passwordHash).' })
+  @ApiOperation({
+    summary:
+      '[Employer] Get top 10 candidate recommendations for a job listing',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Top 10 recommended candidates (no passwordHash).',
+  })
   @ApiResponse({ status: 404, description: 'Job not found.' })
   getJobRecommendations(@Param('id') id: string) {
     return this.service.getRecommendationsForJob(id);
@@ -89,7 +98,11 @@ export class JobsController {
   @ApiResponse({ status: 201, description: 'Job listing created.' })
   async create(@CurrentUser() user: JwtPayload, @Body() body: CreateJobDto) {
     const company = await this.companyRepo.findById(user.companyId!);
-    return this.service.create(user.companyId!, company?.organizationName ?? '', body as never);
+    return this.service.create(
+      user.companyId!,
+      company?.organizationName ?? '',
+      body as never,
+    );
   }
 
   @Patch(':id')
