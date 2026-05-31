@@ -31,22 +31,12 @@ async function doLogin() {
   buttonClick.style.pointerEvents = 'none';
 
   try {
-    console.log('[login] Sending POST /auth/login for:', email);
     const data = await api.post('/auth/login', { email, password });
-    console.log('[login] Response received — data:', data
-      ? { role: data.role, id: data.id, hasToken: !!data.accessToken }
-      : '(undefined — likely 401 redirect already triggered)');
-    if (!data) {
-      console.error('[login] api.post returned undefined — the 401 handler redirected before saveSession could run');
-      return;
-    }
     saveSession(data);
-    console.log('[login] Session saved — redirecting to', data.role);
     window.location.href = data.role === 'candidate'
       ? '../browse-jobs/browse-jobs.html'
       : '../browse-candidates/browse-candidates.html';
   } catch (err) {
-    console.error('[login] Login error:', err);
     errorBanner.textContent    = err.message || 'Login failed. Please try again.';
     errorBanner.style.display  = 'block';
     buttonClick.style.opacity       = '';

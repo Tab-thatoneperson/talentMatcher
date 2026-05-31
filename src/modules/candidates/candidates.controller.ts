@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Patch,
   Post,
@@ -36,8 +35,6 @@ const resumeUpload = FileInterceptor('file', {
 @ApiBearerAuth('jwt')
 @Controller('candidates')
 export class CandidatesController {
-  private readonly logger = new Logger('CandidatesController');
-
   constructor(private readonly service: CandidatesService) {}
 
   @Get('me')
@@ -46,7 +43,6 @@ export class CandidatesController {
   @ApiResponse({ status: 200, description: 'Candidate profile (no passwordHash).' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   getMe(@CurrentUser() user: JwtPayload) {
-    this.logger.log(`[GET /me] Reached controller — sub=${user.sub} role=${user.role}`);
     return this.service.getMe(user.sub);
   }
 

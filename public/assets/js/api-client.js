@@ -18,9 +18,6 @@ async function _request(method, path, body, isFormData) {
   if (token) headers['Authorization'] = `Bearer ${token}`;
   if (!isFormData && body) headers['Content-Type'] = 'application/json';
 
-  const tokenPreview = token ? token.slice(0, 20) + '...' : '(none)';
-  console.log(`[api-client] ${method} ${path} — token: ${tokenPreview}, role: ${role}`);
-
   let response;
   try {
     response = await fetch(`${API_BASE}${path}`, {
@@ -29,15 +26,10 @@ async function _request(method, path, body, isFormData) {
       body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
     });
   } catch (_) {
-    console.error(`[api-client] Network error on ${method} ${path}`);
     throw new ApiError(0, 'Network error. Please check your connection.');
   }
 
-  console.log(`[api-client] ${method} ${path} → status ${response.status}`);
-
   if (response.status === 401) {
-    console.warn(`[api-client] 401 received on ${method} ${path} — clearing session and redirecting`);
-    console.warn(`[api-client] Token that was sent: ${tokenPreview}`);
     clearSession();
     window.location.href = role === 'employer'
       ? '/login/login-employer.html'
@@ -52,7 +44,6 @@ async function _request(method, path, body, isFormData) {
 
   if (!response.ok) {
     const msg = responseBody?.message;
-    console.error(`[api-client] ${method} ${path} → error ${response.status}:`, msg);
     throw new ApiError(
       response.status,
       Array.isArray(msg) ? msg.join(', ') : (msg || `Request failed (${response.status})`),

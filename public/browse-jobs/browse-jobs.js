@@ -1,9 +1,6 @@
-console.log('[browse-jobs] Page loaded — token:', getToken() ? getToken().slice(0, 20) + '...' : '(none)', '| role:', getRole());
 if (!getToken() || getRole() !== 'candidate') {
-  console.warn('[browse-jobs] Guard failed — token:', getToken(), '| role:', getRole(), '— redirecting to login');
   window.location.href = '/login/login-candidate.html';
 }
-console.log('[browse-jobs] Guard passed');
 
 const searchInput    = document.querySelector('#search-input');
 const locationInput  = document.querySelector('#location-input');
@@ -26,18 +23,14 @@ let inRecommendMode = false;
 
 // ── Resume gate ──────────────────────────────────────────────────────────────
 async function checkProfile() {
-  console.log('[browse-jobs] checkProfile — calling GET /candidates/me');
   try {
     const profile = await api.get('/candidates/me');
-    console.log('[browse-jobs] GET /candidates/me succeeded — skills count:', profile?.skills?.length ?? 0);
     if (!profile.skills || profile.skills.length === 0) {
-      console.log('[browse-jobs] No skills found — showing profile gate');
       profileGate.style.display = 'block';
       browseContent.style.display = 'none';
       return false;
     }
-  } catch (err) {
-    console.error('[browse-jobs] GET /candidates/me threw:', err);
+  } catch {
     profileGate.style.display = 'block';
     browseContent.style.display = 'none';
     return false;
