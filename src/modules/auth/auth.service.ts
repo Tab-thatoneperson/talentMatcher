@@ -78,7 +78,12 @@ export class AuthService {
       updatedAt: now,
     });
 
-    return { id: employerId, role: 'employer' as const, companyId, isAdmin: true };
+    return {
+      id: employerId,
+      role: 'employer' as const,
+      companyId,
+      isAdmin: true,
+    };
   }
 
   async login(email: string, password: string) {
