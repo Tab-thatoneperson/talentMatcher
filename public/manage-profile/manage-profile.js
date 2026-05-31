@@ -1,5 +1,5 @@
 if (!getToken() || getRole() !== 'candidate') {
-  window.location.href = '/login/login-candidate.html';
+  // window.location.href = '/manage-profile/manage-profile.html';
 }
 
 const form          = document.querySelector('#manage-profile-form');

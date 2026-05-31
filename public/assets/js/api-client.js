@@ -11,12 +11,18 @@ class ApiError extends Error {
 }
 
 async function _request(method, path, body, isFormData) {
+  
   const role = getRole();
   const token = getToken();
+
+  console.log('role' + role);
+  console.log('token' + token);
 
   const headers = {};
   if (token) headers['Authorization'] = `Bearer ${token}`;
   if (!isFormData && body) headers['Content-Type'] = 'application/json';
+
+  console.log(headers)
 
   let response;
   try {
@@ -29,13 +35,11 @@ async function _request(method, path, body, isFormData) {
     throw new ApiError(0, 'Network error. Please check your connection.');
   }
 
-  if (response.status === 401) {
-    clearSession();
-    window.location.href = role === 'employer'
-      ? '/login/login-employer.html'
-      : '/login/login-candidate.html';
-    return;
-  }
+  // if (response.status === 401) {
+  //   clearSession();
+  //   window.location.href = '/login/login.html';
+  //   return;
+  // }
 
   let responseBody = null;
   if ((response.headers.get('content-type') || '').includes('application/json')) {

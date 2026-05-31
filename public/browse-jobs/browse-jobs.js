@@ -1,5 +1,5 @@
 if (!getToken() || getRole() !== 'candidate') {
-  window.location.href = '/login/login-candidate.html';
+  window.location.href = '/login/login.html';
 }
 
 const searchInput    = document.querySelector('#search-input');
@@ -7,7 +7,7 @@ const locationInput  = document.querySelector('#location-input');
 const searchBtn      = document.querySelector('#search-btn');
 const recommendBtn   = document.querySelector('#recommend-btn');
 const filterType     = document.querySelector('#filter-type');
-const filterIndustry = document.querySelector('#filter-industry');
+const filterIndustry = document.querySelector('#filter-indfustry');
 const filterSalary   = document.querySelector('#filter-salary');
 const filterExp      = document.querySelector('#filter-experience');
 const jobsList       = document.querySelector('#jobs-list');
@@ -20,6 +20,8 @@ const FILTER_SELECTS = [filterType, filterIndustry, filterSalary, filterExp];
 
 let allJobs = [];
 let inRecommendMode = false;
+
+console.log(getRole());
 
 // ── Resume gate ──────────────────────────────────────────────────────────────
 async function checkProfile() {

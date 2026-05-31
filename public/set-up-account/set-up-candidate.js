@@ -88,7 +88,7 @@ continueButton.addEventListener('click', async e => {
     await api.upload('/candidates/me/resume', formData);
     window.location.href = NEXT_PAGE;
   } catch (err) {
-    errorBanner.textContent        = err.message || 'Upload failed. Please try again.';
+    errorBanner.textContent = err.message || 'Upload failed. Please try again.';
     errorBanner.style.display      = 'block';
     continueButton.style.opacity   = '';
     continueButton.style.pointerEvents = '';

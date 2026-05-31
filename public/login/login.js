@@ -30,9 +30,12 @@ async function doLogin() {
   buttonClick.style.opacity       = '0.6';
   buttonClick.style.pointerEvents = 'none';
 
+  console.log('do login')
+
   try {
     const data = await api.post('/auth/login', { email, password });
     saveSession(data);
+    console.log('login');
     window.location.href = data.role === 'candidate'
       ? '../browse-jobs/browse-jobs.html'
       : '../browse-candidates/browse-candidates.html';

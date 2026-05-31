@@ -1119,9 +1119,9 @@ async function clearJobs() {
     });
     const result = await del.json();
     await fetch(`${ES_URL}/jobs/_refresh`, { method: 'POST' });
-    console.log(`🗑️  Deleted ${result.deleted ?? '?'} existing jobs from Elasticsearch`);
+    console.log(`Deleted ${result.deleted ?? '?'} existing jobs from Elasticsearch`);
   } catch (e) {
-    console.warn('⚠️  Could not clear ES index (is Elasticsearch up?):', e.message);
+    console.warn('Could not clear ES index (is Elasticsearch up?):', e.message);
   }
 }
 
@@ -1134,33 +1134,34 @@ async function main() {
   // 1. Register employer
   const reg = await post('/auth/register/employer', EMPLOYER);
   if (reg.status === 201) {
-    console.log('✅ Employer registered — waiting for index refresh...');
+    console.log('Employer registered — waiting for index refresh...');
     await sleep(1500);
   } else if (reg.status === 409) {
-    console.log('ℹ️  Employer already exists — skipping registration');
+    console.log('Employer already exists — skipping registration');
   } else {
-    console.error('❌ Registration failed:', reg.body);
+    console.error('Registration failed:', reg.body);
     process.exit(1);
   }
 
   // 2. Login
   const login = await post('/auth/login', { email: EMPLOYER.email, password: EMPLOYER.password });
   if (login.status !== 200 && login.status !== 201) {
-    console.error('❌ Login failed:', login.body);
+    console.error('Login failed:', login.body);
     process.exit(1);
   }
   const { accessToken } = login.body;
-  console.log('✅ Logged in\n');
+  console.log('Logged in\n');
+  console.log(accessToken);
 
   // 3. Post all jobs
   let created = 0, skipped = 0;
   for (const job of JOBS) {
     const res = await post('/jobs', job, accessToken);
     if (res.status === 201 || res.status === 200) {
-      console.log(`  ✅ [${job.experienceLevel.padEnd(6)}] ${job.title}`);
+      console.log(`[${job.experienceLevel.padEnd(6)}] ${job.title}`);
       created++;
     } else {
-      console.warn(`  ⚠️  "${job.title}" — ${res.status}:`, res.body);
+      console.warn(`"${job.title}" — ${res.status}:`, res.body);
       skipped++;
     }
   }

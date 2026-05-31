@@ -1,5 +1,5 @@
 if (!getToken() || getRole() !== 'employer') {
-  window.location.href = '/login/login-employer.html';
+  window.location.href = '/login/login.html';
 }
 
 const searchInput        = document.querySelector('#search-input');
