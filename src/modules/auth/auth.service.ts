@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  Logger,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,8 +8,6 @@ import { CompanyRepository } from '../companies/company.repository';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger('AuthService');
-
   constructor(
     private readonly candidateRepo: CandidateRepository,
     private readonly employerRepo: EmployerRepository,
@@ -94,23 +87,16 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    this.logger.log(`[LOGIN] Attempt for ${email}`);
     const [candidate, employer] = await Promise.all([
       this.candidateRepo.findByEmail(email),
       this.employerRepo.findByEmail(email),
     ]);
-    this.logger.log(
-      `[LOGIN] ES lookup — candidate found: ${!!candidate}, employer found: ${!!employer}`,
-    );
 
     if (candidate && (await bcrypt.compare(password, candidate.passwordHash))) {
       const accessToken = this.jwtService.sign({
         sub: candidate.id,
         role: 'candidate',
       });
-      this.logger.log(
-        `[LOGIN] Token issued for candidate ${candidate.id} — token prefix: ${accessToken.slice(0, 20)}...`,
-      );
       return { accessToken, role: 'candidate', id: candidate.id };
     }
 
@@ -121,9 +107,6 @@ export class AuthService {
         companyId: employer.companyId,
         isAdmin: employer.isAdmin,
       });
-      this.logger.log(
-        `[LOGIN] Token issued for employer ${employer.id} — token prefix: ${accessToken.slice(0, 20)}...`,
-      );
       return {
         accessToken,
         role: 'employer',
@@ -132,8 +115,6 @@ export class AuthService {
         isAdmin: employer.isAdmin,
       };
     }
-
-    this.logger.warn(`[LOGIN] Failed for ${email} — no matching credentials`);
 
     throw new UnauthorizedException('Invalid email or password');
   }
