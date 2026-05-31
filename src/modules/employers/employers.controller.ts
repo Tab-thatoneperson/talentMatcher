@@ -4,6 +4,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
@@ -24,6 +25,8 @@ import type { JwtPayload } from '../../common/auth/jwt.strategy';
 @ApiBearerAuth('jwt')
 @Controller('employers')
 export class EmployersController {
+  private readonly logger = new Logger('EmployersController');
+
   constructor(private readonly service: EmployersService) {}
 
   @Get('me')
@@ -32,6 +35,7 @@ export class EmployersController {
   @ApiResponse({ status: 200, description: 'Employer profile (no passwordHash).' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   getMe(@CurrentUser() user: JwtPayload) {
+    this.logger.log(`[GET /me] Reached controller — sub=${user.sub} role=${user.role}`);
     return this.service.getMe(user.sub);
   }
 

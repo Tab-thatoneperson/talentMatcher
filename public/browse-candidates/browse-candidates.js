@@ -1,6 +1,9 @@
+console.log('[browse-candidates] Page loaded — token:', getToken() ? getToken().slice(0, 20) + '...' : '(none)', '| role:', getRole());
 if (!getToken() || getRole() !== 'employer') {
+  console.warn('[browse-candidates] Guard failed — token:', getToken(), '| role:', getRole(), '— redirecting to login');
   window.location.href = '/login/login-employer.html';
 }
+console.log('[browse-candidates] Guard passed');
 
 const searchInput        = document.querySelector('#search-input');
 const locationInput      = document.querySelector('#location-input');
@@ -22,8 +25,10 @@ let inRecommendMode = false;
 
 // ── Load employer's own jobs into the selector ────────────────────────────────
 async function loadMyJobs() {
+  console.log('[browse-candidates] loadMyJobs — calling GET /jobs/mine');
   try {
     const jobs = await api.get('/jobs/mine');
+    console.log('[browse-candidates] GET /jobs/mine returned', Array.isArray(jobs) ? jobs.length : 0, 'jobs');
     if (!Array.isArray(jobs) || jobs.length === 0) return;
     jobs.forEach(j => {
       const opt = document.createElement('option');
@@ -32,7 +37,9 @@ async function loadMyJobs() {
       jobSelector.appendChild(opt);
     });
     jobSelector.disabled = false;
-  } catch { /* employer may have no jobs yet */ }
+  } catch (err) {
+    console.error('[browse-candidates] GET /jobs/mine failed:', err);
+  }
 }
 
 jobSelector.addEventListener('change', () => {
