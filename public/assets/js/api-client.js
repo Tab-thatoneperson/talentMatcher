@@ -31,9 +31,9 @@ async function _request(method, path, body, isFormData) {
 
   if (response.status === 401) {
     clearSession();
-    window.location.href = role === 'employer'
-      ? '/login/login-employer.html'
-      : '/login/login-candidate.html';
+    // window.location.href = role === 'employer'
+    //   ? '/login/login-employer.html'
+    //   : '/login/login-candidate.html';
     return;
   }
 

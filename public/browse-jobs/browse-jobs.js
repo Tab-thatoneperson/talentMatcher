@@ -1,5 +1,9 @@
 if (!getToken() || getRole() !== 'candidate') {
-  window.location.href = '/login/login-candidate.html';
+  window.location.href = '/login/login.html';
+}
+
+if (isMember() === 'true') {
+  document.getElementById('member-link').style.display = 'none';
 }
 
 const searchInput    = document.querySelector('#search-input');
@@ -97,7 +101,7 @@ function renderJobs() {
     ? filterSalary.value.split('-').map(Number)
     : [null, null];
 
-  const filtered = allJobs.filter(j => {
+  let filtered = allJobs.filter(j => {
     if (type     && j.employmentType  !== type)    return false;
     if (exp      && j.experienceLevel !== exp)      return false;
     if (industry && j.industry        !== industry) return false;
@@ -120,6 +124,12 @@ function renderJobs() {
     resultsCount.textContent = '0 results';
     return;
   }
+
+  // if not membership then max 10
+  if (isMember() === 'false'){
+    filtered = filtered.slice(0, 10);
+  }
+  
 
   resultsCount.textContent = inRecommendMode
     ? `Your top ${filtered.length} job match${filtered.length !== 1 ? 'es' : ''}`

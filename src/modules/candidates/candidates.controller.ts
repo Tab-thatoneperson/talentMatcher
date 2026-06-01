@@ -109,6 +109,15 @@ export class CandidatesController {
     return this.service.uploadResume(user.sub, file.buffer, file.mimetype);
   }
 
+  // @Patch('me/membership')
+  // @JwtAuth('candidate')
+  // @ApiOperation({ summary: 'Update membership status' })
+  // // @ApiResponse({ status: 200, description: 'Updated candidate profile.' })
+  // // @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  // updateMembership(@CurrentUser() user: JwtPayload, @Body() body: UpdateCandidateDto) {
+  //   return this.service.updateMe(user.sub, body as never);
+  // }
+
   @Get('search')
   @JwtAuth('employer')
   @ApiOperation({ summary: '[Employer] Full-text search across candidate profiles' })

@@ -1,5 +1,9 @@
 if (!getToken() || getRole() !== 'employer') {
-  window.location.href = '/login/login-employer.html';
+  window.location.href = '/login/login.html';
+}
+
+if (isMember() === 'true') {
+  document.getElementById('member-link').style.display = 'none';
 }
 
 const searchInput        = document.querySelector('#search-input');
@@ -103,7 +107,7 @@ function renderCandidates() {
   const industry = filterIndustry.value;
   const locQuery = locationInput.value.trim().toLowerCase();
 
-  const filtered = allCandidates.filter(c => {
+  let filtered = allCandidates.filter(c => {
     if (avail    && c.availability       !== avail)    return false;
     if (expLevel && c.experienceLevel    !== expLevel) return false;
     if (industry && c.industryPreference !== industry) return false;
@@ -125,6 +129,11 @@ function renderCandidates() {
     candidatesList.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">No candidates found.</p>';
     resultsCount.textContent = '0 candidates';
     return;
+  }
+
+  // if not membership then max 10
+  if (isMember() === 'false'){
+    filtered = filtered.slice(0, 10);
   }
 
   resultsCount.textContent = inRecommendMode

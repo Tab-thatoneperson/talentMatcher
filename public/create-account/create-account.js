@@ -1,6 +1,13 @@
 const container  = document.querySelector('.container');
 const isEmployer = container.dataset.pageType === 'employer';
 
+async function wait(ms) {
+  return new Promise((resolve) => {
+    console.log(ms);
+    setTimeout(resolve, ms);
+  });
+}
+
 // ── Password conditions display ────────────────────────────────────────────
 const passwordField = document.querySelector('#password-field');
 
@@ -81,20 +88,30 @@ buttonClick.addEventListener('click', async function (e) {
   buttonClick.style.pointerEvents = 'none';
 
   try {
+    console.log('try regestering');
     if (isEmployer) {
       const organizationName = document.querySelector('#company-name-input').value.trim();
       await api.post('/auth/register/employer', { firstName, lastName, email, password, organizationName });
     } else {
-      await api.post('/auth/register/candidate', { firstName, lastName, email, password });
+      console.log('post candidate regiester');
+      const loginData = await api.post('/auth/register/candidate', { firstName, lastName, email, password });
+      console.log(loginData);
     }
 
-    // Auto-login after registration
-    const loginData = await api.post('/auth/login', { email, password });
-    saveSession(loginData);
+    console.log('regestering after registered');
 
-    window.location.href = isEmployer
-      ? '../set-up-account/set-up-account-employer.html'
-      : '../set-up-account/set-up-account-candidate.html';
+    // Auto-login after registration
+    // const loginData = await api.post('/auth/login', { email, password });
+    // await wait(2000);
+    // console.log(loginData);
+    // saveSession(loginData);
+
+    // window.location.href = isEmployer
+    //   ? '../set-up-account/set-up-account-employer.html'
+    //   : '../set-up-account/set-up-account-candidate.html';
+
+    window.location.href = '../login/login.html';
+
   } catch (err) {
     errorBanner.textContent        = err.message || 'Registration failed. Please try again.';
     errorBanner.style.display      = 'block';
