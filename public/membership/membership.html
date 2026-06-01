@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Membership - TalentMatcher</title>
+    <link rel="stylesheet" href="membership.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div></div>
+      <p>IntelligentTalentMatchingPlatform</p>
+    </header>
+
+    <div class="container">
+      <div class="header-instructions">
+        <h1>Become a Member</h1>
+        <p>Enter your card details to become a member</p>
+      </div>
+
+      <div class="input-container">
+        <div>
+          <p>Card Name *</p>
+          <input id='cardName' type="text" />
+          <div class="invalid-message">
+            <img src="../assets/attention-triangle.png" alt="" />
+            <p>Please enter your card name</p>
+          </div>
+        </div>
+
+        <div>
+          <p>Card Number *</p>
+          <input id='cardNumber' type="text" />
+          <div class="invalid-message">
+            <img src="../assets/attention-triangle.png" alt="" />
+            <p>Please enter your card number</p>
+          </div>
+        </div>
+
+        <div class="expiry-cvc-container">
+          <div>
+            <p>Expiry Date *</p>
+            <input id='expiryDate' type="text" />
+            <div class="invalid-message">
+              <img src="../assets/attention-triangle.png" alt="" />
+              <p>Please enter the expiry date</p>
+            </div>
+          </div>
+          <div>
+            <p>CVV/CVC *</p>
+            <input id='CVC' type="password" />
+            <div class="invalid-message">
+              <img src="../assets/attention-triangle.png" alt="" />
+              <p>Please enter the CVV/CVC</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p>Billing Address</p>
+          <input id='billingAddress' type="text" />
+          <div class="invalid-message">
+            <img src="../assets/attention-triangle.png" alt="" />
+            <p>Please enter your billing address</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button id='cancel-button' class="skip-button"><b>Cancel</b></button>
+        <button id="button-click" class="continue-button">
+          <b>Become a Member</b>
+        </button>
+      </div>
+    </div>
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
+    <script src="membership.js"></script>
+  </body>
+</html>

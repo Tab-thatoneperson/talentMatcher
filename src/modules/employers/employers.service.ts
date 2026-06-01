@@ -47,6 +47,7 @@ export class EmployersService {
       lastName: dto.lastName,
       companyId,
       isAdmin: false,
+      isMember: false,
       createdAt: now,
       updatedAt: now,
     });

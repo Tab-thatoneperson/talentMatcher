@@ -42,9 +42,15 @@ export class AuthService {
       salaryExpectation: { min: 0, max: 0, currency: 'USD' },
       createdAt: now,
       updatedAt: now,
+      isMember: false,
+      cardName: null,
+      cardNumber: null,
+      expiryDate: null,
+      CVC: null,
+      billingAddress: null,
     });
 
-    return { id, role: 'candidate' as const };
+    return { id, isMember: false, role: 'candidate' as const };
   }
 
   async registerEmployer(dto: {
@@ -74,11 +80,22 @@ export class AuthService {
       lastName: dto.lastName,
       companyId,
       isAdmin: true,
+      isMember: false,
       createdAt: now,
       updatedAt: now,
     });
 
+<<<<<<< Updated upstream
     return { id: employerId, role: 'employer' as const, companyId, isAdmin: true };
+=======
+    return {
+      id: employerId,
+      role: 'employer' as const,
+      companyId,
+      isAdmin: true,
+      isMember: false,
+    };
+>>>>>>> Stashed changes
   }
 
   async login(email: string, password: string) {
@@ -91,8 +108,9 @@ export class AuthService {
       const accessToken = this.jwtService.sign({
         sub: candidate.id,
         role: 'candidate',
+        isMember: candidate.isMember,
       });
-      return { accessToken, role: 'candidate', id: candidate.id };
+      return { accessToken, role: 'candidate', id: candidate.id, isMember: candidate.isMember };
     }
 
     if (employer && (await bcrypt.compare(password, employer.passwordHash))) {
@@ -101,6 +119,7 @@ export class AuthService {
         role: 'employer',
         companyId: employer.companyId,
         isAdmin: employer.isAdmin,
+        isMember: employer.isMember,
       });
       return {
         accessToken,
@@ -108,9 +127,11 @@ export class AuthService {
         id: employer.id,
         companyId: employer.companyId,
         isAdmin: employer.isAdmin,
+        isMember: employer.isMember,
       };
     }
 
     throw new UnauthorizedException('Invalid email or password');
   }
+
 }

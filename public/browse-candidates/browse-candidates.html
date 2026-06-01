@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talent Matcher - Browse Candidates</title>
+    <link rel="stylesheet" href="../assets/css/shared.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-brand">
+            <div class="brand-text">Intelligent talent matching platform</div>
+            <nav class="top-nav">
+                <a href="../membership/membership.html" id='member-link' class="nav-link">Become a member!</a>
+                <span class="nav-link nav-active">Browse Candidates</span>
+                <a href="../post-job/post-job.html" class="nav-link">Post a Job</a>
+                <button class="nav-link nav-logout" onclick="clearSession();window.location.href='/login/login.html';">Log out</button>
+            </nav>
+        </header>
+        <main class="main-content">
+            <section class="page-header">
+                <h1>Browse Candidates</h1>
+                <p>Find talent for your open roles</p>
+            </section>
+
+            <!-- Top-K recommendations panel -->
+            <div class="recommend-panel">
+                <label class="recommend-label">Best candidates for a job:</label>
+                <div class="recommend-row">
+                    <select id="job-selector" class="filter-pill recommend-job-select">
+                        <option value="">Select one of your jobs…</option>
+                    </select>
+                    <button id="recommend-btn" class="btn btn-recommend" disabled>&#9733; Find best candidates</button>
+                </div>
+            </div>
+
+            <section class="search-area">
+                <div class="input-group"><span class="icon">🔍</span><input id="search-input" type="text" placeholder="Skills, role or name"></div>
+                <div class="input-group"><span class="icon">📍</span><input id="location-input" type="text" placeholder="Location"></div>
+                <button id="search-btn" class="btn btn-primary">Search</button>
+            </section>
+
+            <section class="filter-group">
+                <select id="filter-availability" class="filter-pill">
+                    <option value="">Availability</option>
+                    <option value="immediate">Immediate</option>
+                    <option value="2weeks">2 Weeks</option>
+                    <option value="1month">1 Month</option>
+                </select>
+                <select id="filter-experience" class="filter-pill">
+                    <option value="">Experience</option>
+                    <option value="junior">Junior</option>
+                    <option value="mid">Mid</option>
+                    <option value="senior">Senior</option>
+                    <option value="lead">Lead</option>
+                </select>
+                <select id="filter-skills" class="filter-pill">
+                    <option value="">Skills</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Python">Python</option>
+                    <option value="React">React</option>
+                    <option value="Node.js">Node.js</option>
+                    <option value="SQL">SQL</option>
+                </select>
+                <select id="filter-industry" class="filter-pill">
+                    <option value="">Industry</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Education">Education</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Other">Other</option>
+                </select>
+            </section>
+
+            <div class="results-bar">
+                <span id="results-count" class="results-count"></span>
+                <button id="clear-filters" class="clear-btn" style="display:none;">✕ Clear filters</button>
+            </div>
+
+            <section id="candidates-list" class="item-list">
+                <p style="text-align:center;color:#666;padding:20px;">Loading candidates...</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/auth-storage.js"></script>
+    <script src="../assets/js/api-client.js"></script>
+    <script src="browse-candidates.js"></script>
+</body>
+</html>
