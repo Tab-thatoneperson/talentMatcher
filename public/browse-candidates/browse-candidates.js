@@ -160,19 +160,68 @@ function renderCandidates() {
       <div class="card">
         <div class="card-header">
           <div class="avatar">${escHtml(initials)}</div>
-          <div class="details">
+          <div id="${c.id}card" class="details">
             <h2>${escHtml(first)} ${escHtml(last)}${rankBadge}</h2>
             <p class="meta-text">${location}</p>
-            <div class="tag-group">${expTag}${indTag}${skillTags}</div>
+            <div class="tag-group">Experience level: ${expTag} Industry: ${indTag} Skills: ${skillTags}</div>
           </div>
         </div>
         <div class="actions-row">
-          <span class="text-link" style="cursor:pointer;">View profile</span>
-          <button class="btn btn-primary btn-sm">Contact</button>
+          <button id="${c.id}" onclick="moreDetails()" class="btn btn-primary btn-sm">View Details</button>
         </div>
       </div>
     `;
   }).join('');
+}
+
+async function moreDetails() {
+  var btn = document.activeElement;
+  console.log('button pressed', btn.id);
+  try {
+      candidate = await api.get(`/candidates/${btn.id}`);
+      console.log(candidate);
+
+      // const jobCards = document.querySelectorAll(`.details`);
+      // console.log(jobCards)
+      const candidateCard = document.getElementById(`${candidate.id}card`);
+      console.log(candidateCard)
+
+      // const remote = job.location.remote ? `<span class="tag tag-grey">Remote</span>` : `<span class="tag tag-grey">On-site</span>`;
+
+      candidateCard.innerHTML +=
+       `
+        <div class="details">
+          <h2 style="padding-top:10px">More Details</h2>
+          <p class="meta-text" style="font-size:14px">${escHtml(candidate.summary || '')}</p>
+          <div class="tag-group">
+            Availability: <span class="tag tag-green">${escHtml(candidate.availability)}</span>
+            Preferred job type: <span class="tag tag-green">Availability: ${escHtml(candidate.preferredJobTypes)}</span>
+          </div>
+          <h2 style="padding-top:10px; padding-bottom:10px">Experiences</h2>
+                  
+      `;
+
+      candidate.experience.forEach(element => {
+        candidateCard.innerHTML +=
+          `
+            <p class="meta-text" style="font-size:14px; font-weight:bold">Title: ${escHtml(element.title || '')}</p>
+            <p class="meta-text" style="font-size:14px">Company: ${escHtml(element.company || '')}</p>
+            <p class="meta-text" style="font-size:14px; padding-bottom:30px">Description: ${escHtml(element.description || '')}</p>           
+          `;
+      });
+
+      candidateCard.innerHTML += 
+      `
+        </div>
+      `;
+
+      btn.parentNode.removeChild(btn);  
+
+
+    } catch (err) {
+      console.log(err.message);
+    }
+
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────
