@@ -1,5 +1,9 @@
 if (!getToken() || getRole() !== 'candidate') {
-  window.location.href = '/login/login-candidate.html';
+  window.location.href = '/login/login.html';
+}
+
+if (isMember() === 'true') {
+  document.getElementById('member-link').style.display = 'none';
 }
 
 const form          = document.querySelector('#manage-profile-form');
@@ -98,7 +102,7 @@ resumeFileInput.addEventListener('change', async () => {
 
   try {
     await api.uploadPatch('/candidates/me/resume', formData);
-    resumeStatus.textContent = `✓ ${file.name} parsed — profile updated`;
+    resumeStatus.textContent = `${file.name} parsed — profile updated`;
     resumeStatus.style.color = '#155724';
     // Reload profile fields so new skills / experience level appear immediately
     skills.length = 0;

@@ -43,6 +43,12 @@ export interface CandidateDocument extends Record<string, unknown> {
   salaryExpectation: { min: number; max: number; currency: string };
   createdAt: string;
   updatedAt: string;
+  isMember: boolean;
+  cardName: string | null;
+  cardNumber: string | null;
+  expiryDate: string | null;
+  CVC: string | null;
+  billingAddress: string | null;
 }
 
 @Injectable()

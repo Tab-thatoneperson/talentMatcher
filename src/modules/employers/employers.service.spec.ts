@@ -17,6 +17,7 @@ const mockEmployer = {
   lastName: 'Smith',
   companyId: 'comp-1',
   isAdmin: true,
+  isMember: true,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-01T00:00:00.000Z',
 };

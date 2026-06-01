@@ -50,4 +50,12 @@ export class UpdateCandidateDto {
   @ApiPropertyOptional({ enum: ['fulltime', 'parttime', 'contract', 'remote'], isArray: true })
   preferredJobTypes?: string[];
   @ApiPropertyOptional({ type: SalaryExpectationDto }) salaryExpectation?: SalaryExpectationDto;
+  @ApiPropertyOptional({ example: false }) isMember?: boolean;
+  @ApiPropertyOptional({ example: 'Mr James Bond' }) cardName?: string;
+  @ApiPropertyOptional({ example: '0987123467880000' }) cardNumber?: string;
+  @ApiPropertyOptional({ example: '03/28' }) expiryDate?: string;
+  @ApiPropertyOptional({ example: '789' }) CVC?: string;
+  @ApiPropertyOptional({ example: '78 Nothing street nowhere place 2898' }) billingAddress?: string;
 }
+
+
