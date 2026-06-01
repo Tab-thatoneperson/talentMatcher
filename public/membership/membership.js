@@ -6,22 +6,6 @@ async function doMembership() {
   console.log('button pressed')
   let hasError = false;
 
-  // for (let i = 0; i < inputList.length; i++) {
-  //   if (inputList[i].type === 'checkbox') continue;
-  //   const el      = inputList[i];
-  //   const wrapper = el.parentElement;
-  //   const msg     = wrapper.querySelector('.invalid-message');
-
-  //   if (el.value === '') {
-  //     el.style.border = '1px solid red';
-  //     if (msg) msg.style.visibility = 'visible';
-  //     hasError = true;
-  //   } else {
-  //     el.style.border = '1px solid #a8a8a8';
-  //     if (msg) msg.style.visibility = 'hidden';
-  //   }
-  // }
-
   if (hasError) return;
 
   const cardName = document.querySelector('#cardName').value.trim();
@@ -36,10 +20,6 @@ async function doMembership() {
 
   const payload = {
     isMember:  true,
-    cardName:   cardName  || undefined,
-    cardNumber:   cardNumber  || undefined,
-    expiryDate:   expiryDate  || undefined,
-    CVC:   CVC  || undefined,
     billingAddress:   billingAddress  || undefined,
   };
 

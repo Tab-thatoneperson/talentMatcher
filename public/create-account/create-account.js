@@ -88,29 +88,22 @@ buttonClick.addEventListener('click', async function (e) {
   buttonClick.style.pointerEvents = 'none';
 
   try {
-    console.log('try regestering');
     if (isEmployer) {
       const organizationName = document.querySelector('#company-name-input').value.trim();
       await api.post('/auth/register/employer', { firstName, lastName, email, password, organizationName });
     } else {
-      console.log('post candidate regiester');
       const loginData = await api.post('/auth/register/candidate', { firstName, lastName, email, password });
-      console.log(loginData);
     }
 
-    console.log('regestering after registered');
-
     // Auto-login after registration
-    // const loginData = await api.post('/auth/login', { email, password });
-    // await wait(2000);
-    // console.log(loginData);
-    // saveSession(loginData);
+    await wait(2000);
+    const loginData = await api.post('/auth/login', { email, password });
 
-    // window.location.href = isEmployer
-    //   ? '../set-up-account/set-up-account-employer.html'
-    //   : '../set-up-account/set-up-account-candidate.html';
+    saveSession(loginData);
 
-    window.location.href = '../login/login.html';
+    window.location.href = isEmployer
+      ? '../set-up-account/set-up-account-employer.html'
+      : '../set-up-account/set-up-account-candidate.html';
 
   } catch (err) {
     errorBanner.textContent        = err.message || 'Registration failed. Please try again.';

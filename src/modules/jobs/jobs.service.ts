@@ -26,7 +26,9 @@ export class JobsService {
     const candidate = await this.candidateRepo.findById(candidateId);
     if (!candidate) throw new NotFoundException('Candidate not found');
     const skillNames = candidate.skills.map((s) => s.name);
-    return this.jobRepo.findRecommendationsForCandidate(skillNames);
+    let limit = 10;
+    if (candidate.isMember === true){ limit = 100; }
+    return this.jobRepo.findRecommendationsForCandidate(skillNames, limit);
   }
 
   async getById(id: string) {

@@ -37,6 +37,7 @@ export class UpdateCandidateDto {
   @ApiPropertyOptional({ example: 'John' }) firstName?: string;
   @ApiPropertyOptional({ example: 'Doe' }) lastName?: string;
   @ApiPropertyOptional({ type: LocationDto }) location?: LocationDto;
+  @ApiPropertyOptional({ example: 'Remote' }) preferredWorking?: string;
   @ApiPropertyOptional({ example: 'Experienced full-stack developer' }) summary?: string;
   @ApiPropertyOptional({ type: [SkillDto] }) skills?: SkillDto[];
   @ApiPropertyOptional({ type: [ExperienceDto] }) experience?: ExperienceDto[];
@@ -51,10 +52,6 @@ export class UpdateCandidateDto {
   preferredJobTypes?: string[];
   @ApiPropertyOptional({ type: SalaryExpectationDto }) salaryExpectation?: SalaryExpectationDto;
   @ApiPropertyOptional({ example: false }) isMember?: boolean;
-  @ApiPropertyOptional({ example: 'Mr James Bond' }) cardName?: string;
-  @ApiPropertyOptional({ example: '0987123467880000' }) cardNumber?: string;
-  @ApiPropertyOptional({ example: '03/28' }) expiryDate?: string;
-  @ApiPropertyOptional({ example: '789' }) CVC?: string;
   @ApiPropertyOptional({ example: '78 Nothing street nowhere place 2898' }) billingAddress?: string;
 }
 
