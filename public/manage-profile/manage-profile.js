@@ -26,7 +26,8 @@ async function loadProfile() {
 
     if (p.firstName) document.querySelector('#first-name').value = p.firstName;
     if (p.lastName)  document.querySelector('#last-name').value  = p.lastName;
-    if (p.email)     document.querySelector('#profile-email').value = p.email;
+    if (p.email) document.querySelector('#profile-email').value = p.email;
+    if (p.preferredWorking) document.querySelector('#preferred-working').value = p.preferredWorking;
 
     if (p.location?.city || p.location?.country) {
       document.querySelector('#profile-location').value =
@@ -124,6 +125,7 @@ form.addEventListener('submit', async e => {
   const lastName    = document.querySelector('#last-name').value.trim();
   const locationRaw = document.querySelector('#profile-location').value.trim();
   const summary     = document.querySelector('#bio').value.trim();
+  const preferredWorking = document.querySelector('#preferred-working').value.trim();
 
   const [city, ...rest] = locationRaw.split(',').map(s => s.trim());
 
@@ -136,6 +138,7 @@ form.addEventListener('submit', async e => {
     },
     summary: summary || undefined,
     skills:  skills.map(name => ({ name })),
+    preferredWorking: preferredWorking || undefined,
   };
 
   submitBtn.disabled = true;

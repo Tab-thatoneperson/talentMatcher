@@ -33,6 +33,7 @@ export class AuthService {
       firstName: dto.firstName,
       lastName: dto.lastName,
       location: { city: '', country: '' },
+      preferredWorking: '',
       summary: '',
       skills: [],
       experience: [],
@@ -43,10 +44,6 @@ export class AuthService {
       createdAt: now,
       updatedAt: now,
       isMember: false,
-      cardName: null,
-      cardNumber: null,
-      expiryDate: null,
-      CVC: null,
       billingAddress: null,
     });
 

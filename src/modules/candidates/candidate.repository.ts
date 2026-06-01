@@ -32,6 +32,7 @@ export interface CandidateDocument extends Record<string, unknown> {
   firstName: string;
   lastName: string;
   location: { city: string; country: string };
+  preferredWorking: string;
   summary: string;
   skills: CandidateSkill[];
   experience: CandidateExperience[];
@@ -44,10 +45,6 @@ export interface CandidateDocument extends Record<string, unknown> {
   createdAt: string;
   updatedAt: string;
   isMember: boolean;
-  cardName: string | null;
-  cardNumber: string | null;
-  expiryDate: string | null;
-  CVC: string | null;
   billingAddress: string | null;
 }
 
