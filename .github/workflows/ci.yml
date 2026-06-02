@@ -92,7 +92,8 @@ jobs:
                 | sudo tee /etc/apt/sources.list.d/elastic-9.x.list
               sudo apt-get update && sudo apt-get install -y elasticsearch
               printf 'discovery.type: single-node\nxpack.security.enabled: false\nnetwork.host: 127.0.0.1\n' | sudo tee /etc/elasticsearch/elasticsearch.yml
-              sudo bash -c 'printf "-Xms256m\n-Xmx256m\n" > /etc/elasticsearch/jvm.options.d/heap.options'
+              printf '%s\n' '-Xms256m' '-Xmx256m' | sudo tee /etc/elasticsearch/jvm.options.d/heap.options > /dev/null
+              sudo systemctl daemon-reload
               sudo systemctl enable elasticsearch
             fi
 
