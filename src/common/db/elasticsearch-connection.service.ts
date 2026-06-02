@@ -142,7 +142,7 @@ export class ElasticsearchConnectionService implements OnModuleInit {
       try {
         const exists = await this.esService.indices.exists({ index });
         if (!exists) {
-          await this.esService.indices.create({ index, mappings } as Parameters<
+          await this.esService.indices.create({ index, mappings, settings: { number_of_replicas: 0 } } as Parameters<
             typeof this.esService.indices.create
           >[0]);
           this.logger.log(`Created index: ${index}`);
