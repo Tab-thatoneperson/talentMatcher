@@ -61,6 +61,7 @@ jobs:
             cd /opt/talentmatcher
 
             echo "── pulling latest code ──"
+            git remote set-url origin https://x-access-token:${REPO_TOKEN}@github.com/${{ github.repository }}.git
             git pull origin main
 
             echo "── writing .env from github secrets ──"
