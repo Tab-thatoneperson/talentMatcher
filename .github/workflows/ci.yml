@@ -83,26 +83,11 @@ jobs:
               sudo npm install -g pm2
             fi
 
-            # ── install Elasticsearch ────────────────────────────────────────
-            if ! command -v elasticsearch &> /dev/null; then
-              echo "── installing Elasticsearch ──"
-              wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch \
-                | sudo gpg --batch --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
-              echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/9.x/apt stable main" \
-                | sudo tee /etc/apt/sources.list.d/elastic-9.x.list
-              sudo apt-get update && sudo apt-get install -y elasticsearch
-              printf 'discovery.type: single-node\nxpack.security.enabled: false\nnetwork.host: 127.0.0.1\n' | sudo tee /etc/elasticsearch/elasticsearch.yml
-              printf '%s\n' '-Xms256m' '-Xmx256m' | sudo tee /etc/elasticsearch/jvm.options.d/heap.options > /dev/null
-              sudo systemctl daemon-reload
-              sudo systemctl enable elasticsearch
-            fi
-
-            sudo systemctl start elasticsearch || true
 
             # ── port forward 80 → 3000 ───────────────────────────────────────
             if ! sudo iptables -t nat -C PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000 2>/dev/null; then
               sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
-              sudo apt-get install -y iptables-persistent netfilter-persistent 2>/dev/null || true
+              sudo DEBIAN_FRONTEND=noninteractive apt-get install -y iptables-persistent netfilter-persistent 2>/dev/null || true
               sudo netfilter-persistent save || true
             fi
 
@@ -129,7 +114,7 @@ jobs:
             } > .env
 
             echo "── installing dependencies & building ──"
-            npm ci
+            timeout 300 npm ci
             NODE_OPTIONS=--max-old-space-size=400 npm run build
 
             echo "── waiting for elasticsearch ──"
@@ -153,8 +138,16 @@ jobs:
             else
               FRESH_DEPLOY=true
               pm2 start dist/main.js --name talentmatcher
-              pm2 save
               sudo env PATH="$PATH:/usr/bin" pm2 startup systemd -u "$USER" --hp "$HOME" | tail -1 | sudo bash || true
+            fi
+            pm2 save
+
+            echo "── verifying app is up ──"
+            sleep 5
+            if ! curl -sf http://localhost:3000 > /dev/null 2>&1; then
+              echo "app did not respond after start"
+              pm2 logs talentmatcher --lines 30 --nostream
+              exit 1
             fi
 
             echo "── deploy complete ──"
