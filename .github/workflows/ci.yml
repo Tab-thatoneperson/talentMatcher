@@ -52,13 +52,39 @@ jobs:
           script: |
             set -e
 
-            if ! command -v docker &> /dev/null; then
-              echo "── installing docker ──"
-              curl -fsSL https://get.docker.com | sudo sh
-              sudo usermod -aG docker "$USER"
-              sudo systemctl enable --now docker
+            # ── install Node.js 20 ──────────────────────────────────────────
+            if ! node -v 2>/dev/null | grep -q "^v20"; then
+              echo "── installing Node.js 20 ──"
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+              sudo apt-get install -y nodejs
             fi
 
+            # ── install PM2 ─────────────────────────────────────────────────
+            if ! command -v pm2 &> /dev/null; then
+              echo "── installing PM2 ──"
+              sudo npm install -g pm2
+            fi
+
+            # ── install Elasticsearch ────────────────────────────────────────
+            if ! command -v elasticsearch &> /dev/null; then
+              echo "── installing Elasticsearch ──"
+              wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch \
+                | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+              echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/9.x/apt stable main" \
+                | sudo tee /etc/apt/sources.list.d/elastic-9.x.list
+              sudo apt-get update && sudo apt-get install -y elasticsearch
+              sudo bash -c 'cat > /etc/elasticsearch/elasticsearch.yml <<EOF
+discovery.type: single-node
+xpack.security.enabled: false
+network.host: 127.0.0.1
+EOF'
+              sudo bash -c 'printf "-Xms256m\n-Xmx256m\n" > /etc/elasticsearch/jvm.options.d/heap.options'
+              sudo systemctl enable elasticsearch
+            fi
+
+            sudo systemctl start elasticsearch || true
+
+            # ── clone repo if needed ─────────────────────────────────────────
             if [ ! -d /opt/talentmatcher/.git ]; then
               sudo mkdir -p /opt/talentmatcher
               sudo chown "$(whoami)":"$(whoami)" /opt/talentmatcher
@@ -72,41 +98,41 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            echo "── writing .env from github secrets ──"
+            echo "── writing .env ──"
             {
               echo "JWT_SECRET=${APP_JWT_SECRET}"
               echo "GEMINI_API_KEY=${APP_GEMINI_KEY}"
               echo "PORT=3000"
+              echo "ELASTICSEARCH_NODE=http://localhost:9200"
             } > .env
-            # ELASTICSEARCH_NODE is intentionally omitted here —
-            # docker-compose.prod.yml sets it to http://elasticsearch:9200
-            # via the environment section, which takes precedence over .env
 
-            echo "── ensuring elasticsearch is up (no-op if already healthy) ──"
-            sudo docker compose -f docker-compose.prod.yml up -d elasticsearch
+            echo "── installing dependencies & building ──"
+            npm ci
+            npm run build
 
-            echo "── waiting for elasticsearch to be healthy ──"
-            for i in $(seq 1 60); do
-              if sudo docker compose -f docker-compose.prod.yml ps elasticsearch \
-                  | grep -q "healthy"; then
+            echo "── waiting for elasticsearch ──"
+            for i in $(seq 1 30); do
+              if curl -sf "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=1s" > /dev/null; then
                 echo "elasticsearch is healthy"
                 break
               fi
-              if [ "$i" -eq 60 ]; then
+              if [ "$i" -eq 30 ]; then
                 echo "elasticsearch did not become healthy in time"
-                sudo docker compose -f docker-compose.prod.yml logs elasticsearch --tail 20
+                sudo journalctl -u elasticsearch --no-pager -n 20
                 exit 1
               fi
-              echo "  waiting... ($i/60)"
+              echo "  waiting... ($i/30)"
               sleep 5
             done
 
-            echo "── rebuilding and restarting app only ──"
-            sudo docker compose -f docker-compose.prod.yml build app
-            sudo docker compose -f docker-compose.prod.yml up -d --no-deps app
-
-            echo "── pruning old images ──"
-            sudo docker image prune -f
+            echo "── restarting app ──"
+            if pm2 describe talentmatcher > /dev/null 2>&1; then
+              pm2 reload talentmatcher
+            else
+              pm2 start dist/main.js --name talentmatcher
+              pm2 save
+              sudo env PATH="$PATH:/usr/bin" pm2 startup systemd -u "$USER" --hp "$HOME" | tail -1 | sudo bash || true
+            fi
 
             echo "── deploy complete ──"
-            sudo docker compose -f docker-compose.prod.yml ps
+            pm2 status
