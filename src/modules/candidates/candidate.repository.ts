@@ -32,6 +32,7 @@ export interface CandidateDocument extends Record<string, unknown> {
   firstName: string;
   lastName: string;
   location: { city: string; country: string };
+  preferredWorking: string;
   summary: string;
   skills: CandidateSkill[];
   experience: CandidateExperience[];
@@ -43,6 +44,8 @@ export interface CandidateDocument extends Record<string, unknown> {
   salaryExpectation: { min: number; max: number; currency: string };
   createdAt: string;
   updatedAt: string;
+  isMember: boolean;
+  billingAddress: string | null;
 }
 
 @Injectable()

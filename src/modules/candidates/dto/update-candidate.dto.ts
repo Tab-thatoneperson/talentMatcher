@@ -37,6 +37,7 @@ export class UpdateCandidateDto {
   @ApiPropertyOptional({ example: 'John' }) firstName?: string;
   @ApiPropertyOptional({ example: 'Doe' }) lastName?: string;
   @ApiPropertyOptional({ type: LocationDto }) location?: LocationDto;
+  @ApiPropertyOptional({ example: 'Remote' }) preferredWorking?: string;
   @ApiPropertyOptional({ example: 'Experienced full-stack developer' }) summary?: string;
   @ApiPropertyOptional({ type: [SkillDto] }) skills?: SkillDto[];
   @ApiPropertyOptional({ type: [ExperienceDto] }) experience?: ExperienceDto[];
@@ -50,4 +51,8 @@ export class UpdateCandidateDto {
   @ApiPropertyOptional({ enum: ['fulltime', 'parttime', 'contract', 'remote'], isArray: true })
   preferredJobTypes?: string[];
   @ApiPropertyOptional({ type: SalaryExpectationDto }) salaryExpectation?: SalaryExpectationDto;
+  @ApiPropertyOptional({ example: false }) isMember?: boolean;
+  @ApiPropertyOptional({ example: '78 Nothing street nowhere place 2898' }) billingAddress?: string;
 }
+
+

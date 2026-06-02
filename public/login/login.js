@@ -3,6 +3,7 @@ const buttonClick = document.querySelector('#button-click');
 const errorBanner = document.querySelector('#login-error');
 
 async function doLogin() {
+  console.log('do login')
   let hasError = false;
 
   for (let i = 0; i < inputList.length; i++) {
@@ -32,6 +33,7 @@ async function doLogin() {
 
   try {
     const data = await api.post('/auth/login', { email, password });
+    console.log('login data', data);
     saveSession(data);
     window.location.href = data.role === 'candidate'
       ? '../browse-jobs/browse-jobs.html'
