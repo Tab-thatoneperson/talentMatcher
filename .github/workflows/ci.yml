@@ -83,11 +83,11 @@ jobs:
             # via the environment section, which takes precedence over .env
 
             echo "── ensuring elasticsearch is up (no-op if already healthy) ──"
-            docker compose -f docker-compose.prod.yml up -d elasticsearch
+            sudo docker compose -f docker-compose.prod.yml up -d elasticsearch
 
             echo "── waiting for elasticsearch to be healthy ──"
             for i in $(seq 1 30); do
-              if docker compose -f docker-compose.prod.yml ps elasticsearch \
+              if sudo docker compose -f docker-compose.prod.yml ps elasticsearch \
                   | grep -q "healthy"; then
                 echo "elasticsearch is healthy"
                 break
@@ -101,11 +101,11 @@ jobs:
             done
 
             echo "── rebuilding and restarting app only ──"
-            docker compose -f docker-compose.prod.yml build app
-            docker compose -f docker-compose.prod.yml up -d --no-deps app
+            sudo docker compose -f docker-compose.prod.yml build app
+            sudo docker compose -f docker-compose.prod.yml up -d --no-deps app
 
             echo "── pruning old images ──"
-            docker image prune -f
+            sudo docker image prune -f
 
             echo "── deploy complete ──"
-            docker compose -f docker-compose.prod.yml ps
+            sudo docker compose -f docker-compose.prod.yml ps
