@@ -62,7 +62,8 @@ jobs:
 
             echo "── pulling latest code ──"
             git remote set-url origin https://x-access-token:${REPO_TOKEN}@github.com/${{ github.repository }}.git
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
 
             echo "── writing .env from github secrets ──"
             {
@@ -83,6 +84,10 @@ jobs:
                   | grep -q "healthy"; then
                 echo "elasticsearch is healthy"
                 break
+              fi
+              if [ "$i" -eq 30 ]; then
+                echo "elasticsearch did not become healthy in time"
+                exit 1
               fi
               echo "  waiting... ($i/30)"
               sleep 5
