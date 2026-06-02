@@ -36,7 +36,7 @@ describe('ResumeParserService', () => {
 
   it('extracts text from a DOCX buffer', async () => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const mammoth = require('mammoth');
+    const mammoth = require('mammoth') as { extractRawText: jest.Mock };
     const buffer = Buffer.from('fake docx bytes');
 
     const result = await service.extractText(

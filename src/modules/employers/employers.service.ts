@@ -1,9 +1,15 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { EmployerDocument, EmployerRepository } from './employer.repository';
 
-function sanitize(doc: EmployerDocument): Omit<EmployerDocument, 'passwordHash'> {
+function sanitize(
+  doc: EmployerDocument,
+): Omit<EmployerDocument, 'passwordHash'> {
   const { passwordHash: _pw, ...rest } = doc;
   void _pw;
   return rest;
@@ -35,7 +41,12 @@ export class EmployersService {
 
   async addToCompany(
     companyId: string,
-    dto: { email: string; password: string; firstName: string; lastName: string },
+    dto: {
+      email: string;
+      password: string;
+      firstName: string;
+      lastName: string;
+    },
   ) {
     const id = uuidv4();
     const now = new Date().toISOString();
@@ -54,10 +65,15 @@ export class EmployersService {
     return this.getMe(id);
   }
 
-  async updateById(id: string, companyId: string, dto: Partial<EmployerDocument>) {
+  async updateById(
+    id: string,
+    companyId: string,
+    dto: Partial<EmployerDocument>,
+  ) {
     const emp = await this.repo.findById(id);
     if (!emp) throw new NotFoundException('Employer not found');
-    if (emp.companyId !== companyId) throw new ForbiddenException('Not in your company');
+    if (emp.companyId !== companyId)
+      throw new ForbiddenException('Not in your company');
     await this.repo.update(id, { ...dto, updatedAt: new Date().toISOString() });
     return this.getMe(id);
   }
@@ -65,7 +81,8 @@ export class EmployersService {
   async deleteById(id: string, companyId: string) {
     const emp = await this.repo.findById(id);
     if (!emp) throw new NotFoundException('Employer not found');
-    if (emp.companyId !== companyId) throw new ForbiddenException('Not in your company');
+    if (emp.companyId !== companyId)
+      throw new ForbiddenException('Not in your company');
     await this.repo.delete(id);
   }
 }

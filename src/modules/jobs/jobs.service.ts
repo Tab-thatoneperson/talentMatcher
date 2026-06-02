@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { JobDocument, JobRepository } from './job.repository';
 import { CandidateRepository } from '../candidates/candidate.repository';
@@ -27,7 +31,9 @@ export class JobsService {
     if (!candidate) throw new NotFoundException('Candidate not found');
     const skillNames = candidate.skills.map((s) => s.name);
     let limit = 10;
-    if (candidate.isMember === true){ limit = 100; }
+    if (candidate.isMember === true) {
+      limit = 100;
+    }
     return this.jobRepo.findRecommendationsForCandidate(skillNames, limit);
   }
 
@@ -37,7 +43,11 @@ export class JobsService {
     return job;
   }
 
-  async create(companyId: string, companyName: string, dto: Partial<JobDocument>) {
+  async create(
+    companyId: string,
+    companyName: string,
+    dto: Partial<JobDocument>,
+  ) {
     const id = uuidv4();
     const now = new Date().toISOString();
     const doc: JobDocument = {
@@ -52,14 +62,17 @@ export class JobsService {
         country: '',
         remote: false,
       },
-      requiredSkills: (dto.requiredSkills as JobDocument['requiredSkills']) ?? [],
+      requiredSkills:
+        (dto.requiredSkills as JobDocument['requiredSkills']) ?? [],
       salaryRange: (dto.salaryRange as JobDocument['salaryRange']) ?? {
         min: 0,
         max: 0,
         currency: 'USD',
       },
-      employmentType: (dto.employmentType as JobDocument['employmentType']) ?? 'fulltime',
-      experienceLevel: (dto.experienceLevel as JobDocument['experienceLevel']) ?? 'mid',
+      employmentType:
+        (dto.employmentType as JobDocument['employmentType']) ?? 'fulltime',
+      experienceLevel:
+        (dto.experienceLevel as JobDocument['experienceLevel']) ?? 'mid',
       status: (dto.status as JobDocument['status']) ?? 'active',
       postedAt: now,
       expiresAt: (dto.expiresAt as string) ?? '',
@@ -72,7 +85,8 @@ export class JobsService {
   async update(id: string, companyId: string, dto: Partial<JobDocument>) {
     const job = await this.jobRepo.findById(id);
     if (!job) throw new NotFoundException('Job not found');
-    if (job.companyId !== companyId) throw new ForbiddenException('Not your job');
+    if (job.companyId !== companyId)
+      throw new ForbiddenException('Not your job');
     await this.jobRepo.update(id, dto);
     return this.getById(id);
   }
@@ -80,7 +94,8 @@ export class JobsService {
   async delete(id: string, companyId: string) {
     const job = await this.jobRepo.findById(id);
     if (!job) throw new NotFoundException('Job not found');
-    if (job.companyId !== companyId) throw new ForbiddenException('Not your job');
+    if (job.companyId !== companyId)
+      throw new ForbiddenException('Not your job');
     await this.jobRepo.delete(id);
   }
 

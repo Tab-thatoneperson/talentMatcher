@@ -76,7 +76,10 @@ describe('EmployersService', () => {
 
       expect(repo.update).toHaveBeenCalledWith(
         'emp-1',
-        expect.objectContaining({ firstName: 'Bob', updatedAt: expect.any(String) }),
+        expect.objectContaining({
+          firstName: 'Bob',
+          updatedAt: expect.any(String) as string,
+        }),
       );
       expect(result).not.toHaveProperty('passwordHash');
     });
@@ -92,7 +95,10 @@ describe('EmployersService', () => {
 
   describe('listByCompany', () => {
     it('returns all employers in the company without passwordHash', async () => {
-      repo.findByCompany.mockResolvedValue([mockEmployer, { ...mockEmployer, id: 'emp-2', isAdmin: false }]);
+      repo.findByCompany.mockResolvedValue([
+        mockEmployer,
+        { ...mockEmployer, id: 'emp-2', isAdmin: false },
+      ]);
 
       const result = await service.listByCompany('comp-1');
 
@@ -104,7 +110,11 @@ describe('EmployersService', () => {
 
   describe('addToCompany', () => {
     it('creates a non-admin employer for the company', async () => {
-      repo.findById.mockResolvedValue({ ...mockEmployer, id: 'new-emp-id', isAdmin: false });
+      repo.findById.mockResolvedValue({
+        ...mockEmployer,
+        id: 'new-emp-id',
+        isAdmin: false,
+      });
 
       const result = await service.addToCompany('comp-1', {
         email: 'new@company.com',
@@ -115,7 +125,11 @@ describe('EmployersService', () => {
 
       expect(repo.create).toHaveBeenCalledWith(
         'new-emp-id',
-        expect.objectContaining({ companyId: 'comp-1', isAdmin: false, passwordHash: 'hashed_pw' }),
+        expect.objectContaining({
+          companyId: 'comp-1',
+          isAdmin: false,
+          passwordHash: 'hashed_pw',
+        }),
       );
       expect(result).not.toHaveProperty('passwordHash');
     });
@@ -127,22 +141,34 @@ describe('EmployersService', () => {
         .mockResolvedValueOnce(mockEmployer)
         .mockResolvedValueOnce({ ...mockEmployer, firstName: 'Updated' });
 
-      const result = await service.updateById('emp-1', 'comp-1', { firstName: 'Updated' });
+      const result = await service.updateById('emp-1', 'comp-1', {
+        firstName: 'Updated',
+      });
 
-      expect(repo.update).toHaveBeenCalledWith('emp-1', expect.objectContaining({ firstName: 'Updated' }));
+      expect(repo.update).toHaveBeenCalledWith(
+        'emp-1',
+        expect.objectContaining({ firstName: 'Updated' }),
+      );
       expect(result.firstName).toBe('Updated');
     });
 
     it('throws NotFoundException when employer does not exist', async () => {
       repo.findById.mockResolvedValue(null);
 
-      await expect(service.updateById('missing', 'comp-1', {})).rejects.toThrow(NotFoundException);
+      await expect(service.updateById('missing', 'comp-1', {})).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws ForbiddenException when employer is in a different company', async () => {
-      repo.findById.mockResolvedValue({ ...mockEmployer, companyId: 'other-comp' });
+      repo.findById.mockResolvedValue({
+        ...mockEmployer,
+        companyId: 'other-comp',
+      });
 
-      await expect(service.updateById('emp-1', 'comp-1', {})).rejects.toThrow(ForbiddenException);
+      await expect(service.updateById('emp-1', 'comp-1', {})).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 
@@ -158,13 +184,20 @@ describe('EmployersService', () => {
     it('throws NotFoundException when employer does not exist', async () => {
       repo.findById.mockResolvedValue(null);
 
-      await expect(service.deleteById('missing', 'comp-1')).rejects.toThrow(NotFoundException);
+      await expect(service.deleteById('missing', 'comp-1')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws ForbiddenException when employer is in a different company', async () => {
-      repo.findById.mockResolvedValue({ ...mockEmployer, companyId: 'other-comp' });
+      repo.findById.mockResolvedValue({
+        ...mockEmployer,
+        companyId: 'other-comp',
+      });
 
-      await expect(service.deleteById('emp-1', 'comp-1')).rejects.toThrow(ForbiddenException);
+      await expect(service.deleteById('emp-1', 'comp-1')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 });

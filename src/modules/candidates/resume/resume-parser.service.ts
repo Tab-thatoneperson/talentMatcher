@@ -10,8 +10,13 @@ export class ResumeParserService {
   async extractText(buffer: Buffer, mimetype: string): Promise<string> {
     if (mimetype === PDF_MIME) {
       // pdf-parse v2 uses a class-based API: new PDFParse({ data: buffer }).getText()
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
-      const { PDFParse } = require('pdf-parse') as { PDFParse: new (opts: { data: Buffer }) => { getText(): Promise<{ text: string }>; destroy(): Promise<void> } };
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { PDFParse } = require('pdf-parse') as {
+        PDFParse: new (opts: { data: Buffer }) => {
+          getText(): Promise<{ text: string }>;
+          destroy(): Promise<void>;
+        };
+      };
       const parser = new PDFParse({ data: buffer });
       const result = await parser.getText();
       await parser.destroy();
@@ -23,6 +28,8 @@ export class ResumeParserService {
       return result.value;
     }
 
-    throw new UnsupportedMediaTypeException('Only PDF and DOCX files are allowed');
+    throw new UnsupportedMediaTypeException(
+      'Only PDF and DOCX files are allowed',
+    );
   }
 }

@@ -75,7 +75,11 @@ export class JobRepository extends BaseRepository<JobDocument> {
                 path: 'requiredSkills',
                 query: {
                   match: {
-                    'requiredSkills.name': { query: q, fuzziness: 'AUTO', prefix_length: 1 },
+                    'requiredSkills.name': {
+                      query: q,
+                      fuzziness: 'AUTO',
+                      prefix_length: 1,
+                    },
                   },
                 },
               },

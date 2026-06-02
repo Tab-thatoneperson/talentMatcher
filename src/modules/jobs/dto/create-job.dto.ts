@@ -22,7 +22,9 @@ export class CreateJobDto {
   @ApiProperty({ example: 'Senior Backend Developer' })
   title: string;
 
-  @ApiProperty({ example: 'We are looking for a senior backend developer to join our team.' })
+  @ApiProperty({
+    example: 'We are looking for a senior backend developer to join our team.',
+  })
   description: string;
 
   @ApiPropertyOptional({ type: JobLocationDto })
@@ -34,19 +36,37 @@ export class CreateJobDto {
   @ApiPropertyOptional({ type: SalaryRangeDto })
   salaryRange?: SalaryRangeDto;
 
-  @ApiPropertyOptional({ enum: ['fulltime', 'parttime', 'contract'], example: 'fulltime' })
+  @ApiPropertyOptional({
+    enum: ['fulltime', 'parttime', 'contract'],
+    example: 'fulltime',
+  })
   employmentType?: string;
 
-  @ApiPropertyOptional({ enum: ['junior', 'mid', 'senior', 'lead'], example: 'senior' })
+  @ApiPropertyOptional({
+    enum: ['junior', 'mid', 'senior', 'lead'],
+    example: 'senior',
+  })
   experienceLevel?: string;
 
   @ApiPropertyOptional({
-    enum: ['Technology', 'Finance', 'Healthcare', 'Education', 'Marketing', 'Engineering', 'Sales', 'Other'],
+    enum: [
+      'Technology',
+      'Finance',
+      'Healthcare',
+      'Education',
+      'Marketing',
+      'Engineering',
+      'Sales',
+      'Other',
+    ],
     example: 'Technology',
   })
   industry?: string;
 
-  @ApiPropertyOptional({ enum: ['active', 'closed', 'draft'], example: 'active' })
+  @ApiPropertyOptional({
+    enum: ['active', 'closed', 'draft'],
+    example: 'active',
+  })
   status?: string;
 
   @ApiPropertyOptional({ example: '2026-12-31' })

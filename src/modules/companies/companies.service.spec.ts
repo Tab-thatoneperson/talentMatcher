@@ -42,22 +42,26 @@ describe('CompaniesService', () => {
     it('throws NotFoundException when company does not exist', async () => {
       repo.findById.mockResolvedValue(null);
 
-      await expect(service.getById('missing')).rejects.toThrow(NotFoundException);
+      await expect(service.getById('missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
   describe('update', () => {
     it('updates company when caller is admin of that company', async () => {
-      repo.findById.mockResolvedValue({ ...mockCompany, organizationName: 'New Name' });
+      repo.findById.mockResolvedValue({
+        ...mockCompany,
+        organizationName: 'New Name',
+      });
 
-      const result = await service.update(
-        'comp-1',
-        true,
-        'comp-1',
-        { organizationName: 'New Name' },
-      );
+      const result = await service.update('comp-1', true, 'comp-1', {
+        organizationName: 'New Name',
+      });
 
-      expect(repo.update).toHaveBeenCalledWith('comp-1', { organizationName: 'New Name' });
+      expect(repo.update).toHaveBeenCalledWith('comp-1', {
+        organizationName: 'New Name',
+      });
       expect(result.organizationName).toBe('New Name');
     });
 
@@ -82,11 +86,15 @@ describe('CompaniesService', () => {
     });
 
     it('throws ForbiddenException when caller is not admin', async () => {
-      await expect(service.delete('comp-1', false, 'comp-1')).rejects.toThrow(ForbiddenException);
+      await expect(service.delete('comp-1', false, 'comp-1')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('throws ForbiddenException when admin tries to delete a different company', async () => {
-      await expect(service.delete('comp-1', true, 'comp-2')).rejects.toThrow(ForbiddenException);
+      await expect(service.delete('comp-1', true, 'comp-2')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 });

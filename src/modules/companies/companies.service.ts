@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CompanyDocument, CompanyRepository } from './company.repository';
 
 @Injectable()
@@ -11,9 +15,16 @@ export class CompaniesService {
     return company;
   }
 
-  async update(id: string, isAdmin: boolean, companyId: string, dto: Partial<CompanyDocument>) {
+  async update(
+    id: string,
+    isAdmin: boolean,
+    companyId: string,
+    dto: Partial<CompanyDocument>,
+  ) {
     if (!isAdmin || companyId !== id) {
-      throw new ForbiddenException('Admin access required for own company only');
+      throw new ForbiddenException(
+        'Admin access required for own company only',
+      );
     }
     await this.repo.update(id, dto);
     return this.getById(id);
@@ -21,7 +32,9 @@ export class CompaniesService {
 
   async delete(id: string, isAdmin: boolean, companyId: string) {
     if (!isAdmin || companyId !== id) {
-      throw new ForbiddenException('Admin access required for own company only');
+      throw new ForbiddenException(
+        'Admin access required for own company only',
+      );
     }
     await this.repo.delete(id);
   }
