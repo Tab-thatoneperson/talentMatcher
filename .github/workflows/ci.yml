@@ -131,6 +131,7 @@ jobs:
             echo "── installing dependencies & building ──"
             timeout 300 npm ci
             NODE_OPTIONS=--max-old-space-size=400 npm run build
+            npm prune --production
 
             echo "── restarting app ──"
             if pm2 describe talentmatcher > /dev/null 2>&1; then
