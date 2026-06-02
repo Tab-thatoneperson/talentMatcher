@@ -50,7 +50,25 @@ jobs:
           key:      ${{ secrets.EC2_PRIVATE_KEY }}
           envs:     APP_JWT_SECRET,APP_GEMINI_KEY,REPO_TOKEN
           script: |
-            set -e
+            set -euo pipefail
+
+            FRESH_DEPLOY=false
+
+            cleanup() {
+              local code=$?
+              if [ $code -ne 0 ]; then
+                echo "── deploy failed (exit $code), cleaning up ──"
+                rm -rf /opt/talentmatcher/node_modules /opt/talentmatcher/dist 2>/dev/null || true
+                if [ "$FRESH_DEPLOY" = "true" ]; then
+                  pm2 delete talentmatcher 2>/dev/null || true
+                fi
+                echo "── elasticsearch status ──"
+                sudo systemctl status elasticsearch --no-pager -n 10 || true
+                echo "── app logs ──"
+                pm2 logs talentmatcher --lines 20 --nostream 2>/dev/null || true
+              fi
+            }
+            trap cleanup EXIT
 
             # ── install Node.js 20 ──────────────────────────────────────────
             if ! node -v 2>/dev/null | grep -q "^v20"; then
@@ -84,6 +102,13 @@ EOF'
 
             sudo systemctl start elasticsearch || true
 
+            # ── port forward 80 → 3000 ───────────────────────────────────────
+            if ! sudo iptables -t nat -C PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000 2>/dev/null; then
+              sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+              sudo apt-get install -y iptables-persistent netfilter-persistent 2>/dev/null || true
+              sudo netfilter-persistent save || true
+            fi
+
             # ── clone repo if needed ─────────────────────────────────────────
             if [ ! -d /opt/talentmatcher/.git ]; then
               sudo mkdir -p /opt/talentmatcher
@@ -108,7 +133,7 @@ EOF'
 
             echo "── installing dependencies & building ──"
             npm ci
-            npm run build
+            NODE_OPTIONS=--max-old-space-size=400 npm run build
 
             echo "── waiting for elasticsearch ──"
             for i in $(seq 1 30); do
@@ -129,6 +154,7 @@ EOF'
             if pm2 describe talentmatcher > /dev/null 2>&1; then
               pm2 reload talentmatcher
             else
+              FRESH_DEPLOY=true
               pm2 start dist/main.js --name talentmatcher
               pm2 save
               sudo env PATH="$PATH:/usr/bin" pm2 startup systemd -u "$USER" --hp "$HOME" | tail -1 | sudo bash || true
