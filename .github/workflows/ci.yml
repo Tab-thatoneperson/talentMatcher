@@ -50,6 +50,13 @@ jobs:
           envs:     APP_JWT_SECRET,APP_GEMINI_KEY
           script: |
             set -e
+
+            if [ ! -d /opt/talentmatcher ]; then
+              sudo mkdir -p /opt/talentmatcher
+              sudo chown "$(whoami)":"$(whoami)" /opt/talentmatcher
+              git clone https://github.com/${{ github.repository }}.git /opt/talentmatcher
+            fi
+
             cd /opt/talentmatcher
 
             echo "── pulling latest code ──"
