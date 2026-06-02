@@ -64,7 +64,11 @@ describe('AuthService', () => {
         lastName: 'Doe',
       });
 
-      expect(result).toEqual({ id: 'test-uuid', role: 'candidate' });
+      expect(result).toEqual({
+        id: 'test-uuid',
+        isMember: false,
+        role: 'candidate',
+      });
       expect(candidateRepo.create).toHaveBeenCalledWith(
         'test-uuid',
         expect.objectContaining({
