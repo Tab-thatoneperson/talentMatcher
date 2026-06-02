@@ -86,17 +86,18 @@ jobs:
             sudo docker compose -f docker-compose.prod.yml up -d elasticsearch
 
             echo "── waiting for elasticsearch to be healthy ──"
-            for i in $(seq 1 30); do
+            for i in $(seq 1 60); do
               if sudo docker compose -f docker-compose.prod.yml ps elasticsearch \
                   | grep -q "healthy"; then
                 echo "elasticsearch is healthy"
                 break
               fi
-              if [ "$i" -eq 30 ]; then
+              if [ "$i" -eq 60 ]; then
                 echo "elasticsearch did not become healthy in time"
+                sudo docker compose -f docker-compose.prod.yml logs elasticsearch --tail 20
                 exit 1
               fi
-              echo "  waiting... ($i/30)"
+              echo "  waiting... ($i/60)"
               sleep 5
             done
 
