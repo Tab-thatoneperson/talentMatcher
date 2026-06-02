@@ -124,7 +124,12 @@ export class CandidateRepository extends BaseRepository<CandidateDocument> {
             {
               multi_match: {
                 query: q,
-                fields: ['firstName^3', 'lastName^3', 'summary^2', 'industryPreference'],
+                fields: [
+                  'firstName^3',
+                  'lastName^3',
+                  'summary^2',
+                  'industryPreference',
+                ],
                 fuzziness: 'AUTO',
                 prefix_length: 1,
                 operator: 'or',
@@ -135,7 +140,11 @@ export class CandidateRepository extends BaseRepository<CandidateDocument> {
                 path: 'skills',
                 query: {
                   match: {
-                    'skills.name': { query: q, fuzziness: 'AUTO', prefix_length: 1 },
+                    'skills.name': {
+                      query: q,
+                      fuzziness: 'AUTO',
+                      prefix_length: 1,
+                    },
                   },
                 },
               },

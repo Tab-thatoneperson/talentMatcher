@@ -20,12 +20,16 @@ class SalaryRangeDto {
 
 export class UpdateJobDto {
   @ApiPropertyOptional({ example: 'Lead Backend Developer' }) title?: string;
-  @ApiPropertyOptional({ example: 'Updated description.' }) description?: string;
+  @ApiPropertyOptional({ example: 'Updated description.' })
+  description?: string;
   @ApiPropertyOptional({ type: JobLocationDto }) location?: JobLocationDto;
-  @ApiPropertyOptional({ type: [RequiredSkillDto] }) requiredSkills?: RequiredSkillDto[];
+  @ApiPropertyOptional({ type: [RequiredSkillDto] })
+  requiredSkills?: RequiredSkillDto[];
   @ApiPropertyOptional({ type: SalaryRangeDto }) salaryRange?: SalaryRangeDto;
-  @ApiPropertyOptional({ enum: ['fulltime', 'parttime', 'contract'] }) employmentType?: string;
-  @ApiPropertyOptional({ enum: ['junior', 'mid', 'senior', 'lead'] }) experienceLevel?: string;
+  @ApiPropertyOptional({ enum: ['fulltime', 'parttime', 'contract'] })
+  employmentType?: string;
+  @ApiPropertyOptional({ enum: ['junior', 'mid', 'senior', 'lead'] })
+  experienceLevel?: string;
   @ApiPropertyOptional({ enum: ['active', 'closed', 'draft'] }) status?: string;
   @ApiPropertyOptional({ example: '2027-06-30' }) expiresAt?: string;
 }

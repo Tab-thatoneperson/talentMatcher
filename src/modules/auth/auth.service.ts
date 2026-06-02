@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
@@ -103,7 +107,12 @@ export class AuthService {
         role: 'candidate',
         isMember: candidate.isMember,
       });
-      return { accessToken, role: 'candidate', id: candidate.id, isMember: candidate.isMember };
+      return {
+        accessToken,
+        role: 'candidate',
+        id: candidate.id,
+        isMember: candidate.isMember,
+      };
     }
 
     if (employer && (await bcrypt.compare(password, employer.passwordHash))) {
@@ -126,5 +135,4 @@ export class AuthService {
 
     throw new UnauthorizedException('Invalid email or password');
   }
-
 }

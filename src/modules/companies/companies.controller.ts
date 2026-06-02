@@ -29,20 +29,31 @@ export class CompaniesController {
   @JwtAuth('employer')
   @ApiOperation({ summary: '[Admin Employer] Update own company details' })
   @ApiResponse({ status: 200, description: 'Company updated.' })
-  @ApiResponse({ status: 403, description: 'Admin access required for own company only.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Admin access required for own company only.',
+  })
   update(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,
     @Body() body: UpdateCompanyDto,
   ) {
-    return this.service.update(id, user.isAdmin ?? false, user.companyId ?? '', body as never);
+    return this.service.update(
+      id,
+      user.isAdmin ?? false,
+      user.companyId ?? '',
+      body as never,
+    );
   }
 
   @Delete(':id')
   @JwtAuth('employer')
   @ApiOperation({ summary: '[Admin Employer] Delete own company' })
   @ApiResponse({ status: 200, description: 'Company deleted.' })
-  @ApiResponse({ status: 403, description: 'Admin access required for own company only.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Admin access required for own company only.',
+  })
   delete(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     return this.service.delete(id, user.isAdmin ?? false, user.companyId ?? '');
   }
