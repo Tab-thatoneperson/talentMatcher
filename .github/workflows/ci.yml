@@ -113,13 +113,9 @@ jobs:
               echo "ELASTICSEARCH_NODE=http://localhost:9200"
             } > .env
 
-            echo "── installing dependencies & building ──"
-            timeout 300 npm ci
-            NODE_OPTIONS=--max-old-space-size=400 npm run build
-
             echo "── waiting for elasticsearch ──"
             for i in $(seq 1 30); do
-              if curl -sf "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=1s" > /dev/null; then
+              if curl -s "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s" > /dev/null; then
                 echo "elasticsearch is healthy"
                 break
               fi
@@ -131,6 +127,10 @@ jobs:
               echo "  waiting... ($i/30)"
               sleep 5
             done
+
+            echo "── installing dependencies & building ──"
+            timeout 300 npm ci
+            NODE_OPTIONS=--max-old-space-size=400 npm run build
 
             echo "── restarting app ──"
             if pm2 describe talentmatcher > /dev/null 2>&1; then
