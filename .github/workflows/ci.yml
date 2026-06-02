@@ -43,18 +43,19 @@ jobs:
         env:
           APP_JWT_SECRET:   ${{ secrets.JWT_SECRET }}
           APP_GEMINI_KEY:   ${{ secrets.GEMINI_API_KEY }}
+          REPO_TOKEN:       ${{ secrets.GITHUB_TOKEN }}
         with:
           host:     ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key:      ${{ secrets.EC2_PRIVATE_KEY }}
-          envs:     APP_JWT_SECRET,APP_GEMINI_KEY
+          envs:     APP_JWT_SECRET,APP_GEMINI_KEY,REPO_TOKEN
           script: |
             set -e
 
             if [ ! -d /opt/talentmatcher ]; then
               sudo mkdir -p /opt/talentmatcher
               sudo chown "$(whoami)":"$(whoami)" /opt/talentmatcher
-              git clone https://github.com/${{ github.repository }}.git /opt/talentmatcher
+              git clone https://x-access-token:${REPO_TOKEN}@github.com/${{ github.repository }}.git /opt/talentmatcher
             fi
 
             cd /opt/talentmatcher
