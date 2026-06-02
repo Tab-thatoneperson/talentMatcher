@@ -113,9 +113,10 @@ describe('JobsService', () => {
       const result = await service.getRecommendationsForCandidate('cand-1');
 
       expect(candidateRepo.findById).toHaveBeenCalledWith('cand-1');
-      expect(jobRepo.findRecommendationsForCandidate).toHaveBeenCalledWith([
-        'TypeScript',
-      ]);
+      expect(jobRepo.findRecommendationsForCandidate).toHaveBeenCalledWith(
+        ['TypeScript'],
+        10,
+      );
       expect(result).toHaveLength(1);
     });
 
