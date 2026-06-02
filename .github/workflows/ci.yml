@@ -91,11 +91,7 @@ jobs:
               echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/9.x/apt stable main" \
                 | sudo tee /etc/apt/sources.list.d/elastic-9.x.list
               sudo apt-get update && sudo apt-get install -y elasticsearch
-              sudo bash -c 'cat > /etc/elasticsearch/elasticsearch.yml <<EOF
-discovery.type: single-node
-xpack.security.enabled: false
-network.host: 127.0.0.1
-EOF'
+              printf 'discovery.type: single-node\nxpack.security.enabled: false\nnetwork.host: 127.0.0.1\n' | sudo tee /etc/elasticsearch/elasticsearch.yml
               sudo bash -c 'printf "-Xms256m\n-Xmx256m\n" > /etc/elasticsearch/jvm.options.d/heap.options'
               sudo systemctl enable elasticsearch
             fi
