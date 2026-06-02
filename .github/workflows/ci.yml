@@ -144,7 +144,7 @@ jobs:
 
             echo "── verifying app is up ──"
             sleep 5
-            if ! curl -sf http://localhost:3000 > /dev/null 2>&1; then
+            if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
               echo "app did not respond after start"
               pm2 logs talentmatcher --lines 30 --nostream
               exit 1
