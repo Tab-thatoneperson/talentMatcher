@@ -40,7 +40,10 @@ export class CandidatesController {
   @Get('me')
   @JwtAuth('candidate')
   @ApiOperation({ summary: 'Get own candidate profile' })
-  @ApiResponse({ status: 200, description: 'Candidate profile (no passwordHash).' })
+  @ApiResponse({
+    status: 200,
+    description: 'Candidate profile (no passwordHash).',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   getMe(@CurrentUser() user: JwtPayload) {
     return this.service.getMe(user.sub);
@@ -57,7 +60,9 @@ export class CandidatesController {
 
   @Delete('me')
   @JwtAuth('candidate')
-  @ApiOperation({ summary: 'Delete own candidate account and all associated data' })
+  @ApiOperation({
+    summary: 'Delete own candidate account and all associated data',
+  })
   @ApiResponse({ status: 200, description: 'Account deleted.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   deleteMe(@CurrentUser() user: JwtPayload) {
@@ -67,17 +72,27 @@ export class CandidatesController {
   @Post('me/resume')
   @JwtAuth('candidate')
   @UseInterceptors(resumeUpload)
-  @ApiOperation({ summary: 'Upload resume (PDF or DOCX, max 5 MB) — extracts profile data via AI' })
+  @ApiOperation({
+    summary:
+      'Upload resume (PDF or DOCX, max 5 MB) — extracts profile data via AI',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        file: { type: 'string', format: 'binary', description: 'PDF or DOCX resume file' },
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'PDF or DOCX resume file',
+        },
       },
     },
   })
-  @ApiResponse({ status: 201, description: 'Profile updated with extracted resume data.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Profile updated with extracted resume data.',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @ApiResponse({ status: 415, description: 'Unsupported file type.' })
   uploadResume(
@@ -90,17 +105,26 @@ export class CandidatesController {
   @Patch('me/resume')
   @JwtAuth('candidate')
   @UseInterceptors(resumeUpload)
-  @ApiOperation({ summary: 'Re-upload resume — overwrites previously extracted fields' })
+  @ApiOperation({
+    summary: 'Re-upload resume — overwrites previously extracted fields',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        file: { type: 'string', format: 'binary', description: 'Replacement PDF or DOCX resume file' },
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Replacement PDF or DOCX resume file',
+        },
       },
     },
   })
-  @ApiResponse({ status: 200, description: 'Profile updated with new resume data.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Profile updated with new resume data.',
+  })
   @ApiResponse({ status: 415, description: 'Unsupported file type.' })
   reUploadResume(
     @CurrentUser() user: JwtPayload,
@@ -120,20 +144,42 @@ export class CandidatesController {
 
   @Get('search')
   @JwtAuth('employer')
-  @ApiOperation({ summary: '[Employer] Full-text search across candidate profiles' })
+  @ApiOperation({
+    summary: '[Employer] Full-text search across candidate profiles',
+  })
   @ApiQuery({ name: 'q', required: true, description: 'Search query' })
-  @ApiResponse({ status: 200, description: 'Matching candidates (no passwordHash).' })
+  @ApiResponse({
+    status: 200,
+    description: 'Matching candidates (no passwordHash).',
+  })
   search(@Query('q') q: string) {
     return this.service.search(q ?? '');
   }
 
   @Get()
   @JwtAuth('employer')
-  @ApiOperation({ summary: '[Employer] List all candidates with optional filters' })
-  @ApiQuery({ name: 'skills', required: false, description: 'Comma-separated skill names' })
-  @ApiQuery({ name: 'education', required: false, description: 'Degree or field filter' })
-  @ApiQuery({ name: 'experience', required: false, description: 'Minimum years of experience in a skill' })
-  @ApiResponse({ status: 200, description: 'List of candidates (no passwordHash).' })
+  @ApiOperation({
+    summary: '[Employer] List all candidates with optional filters',
+  })
+  @ApiQuery({
+    name: 'skills',
+    required: false,
+    description: 'Comma-separated skill names',
+  })
+  @ApiQuery({
+    name: 'education',
+    required: false,
+    description: 'Degree or field filter',
+  })
+  @ApiQuery({
+    name: 'experience',
+    required: false,
+    description: 'Minimum years of experience in a skill',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of candidates (no passwordHash).',
+  })
   listAll(
     @Query('skills') skills?: string,
     @Query('education') education?: string,

@@ -9,8 +9,7 @@ export default registerAs('elasticsearch', () => ({
           password: process.env.ELASTICSEARCH_PASSWORD,
         }
       : undefined,
-  tls:
-    process.env.ELASTICSEARCH_TLS_CA
-      ? { ca: process.env.ELASTICSEARCH_TLS_CA }
-      : undefined,
+  tls: process.env.ELASTICSEARCH_TLS_CA
+    ? { ca: process.env.ELASTICSEARCH_TLS_CA }
+    : undefined,
 }));

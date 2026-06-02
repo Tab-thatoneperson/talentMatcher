@@ -29,7 +29,10 @@ export class EmployersController {
   @Get('me')
   @JwtAuth('employer')
   @ApiOperation({ summary: 'Get own employer profile' })
-  @ApiResponse({ status: 200, description: 'Employer profile (no passwordHash).' })
+  @ApiResponse({
+    status: 200,
+    description: 'Employer profile (no passwordHash).',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   getMe(@CurrentUser() user: JwtPayload) {
     return this.service.getMe(user.sub);
@@ -54,7 +57,10 @@ export class EmployersController {
   @Get()
   @JwtAuth('employer')
   @ApiOperation({ summary: '[Admin] List all employers in own company' })
-  @ApiResponse({ status: 200, description: 'List of employers in the company.' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of employers in the company.',
+  })
   @ApiResponse({ status: 403, description: 'Admin access required.' })
   listAll(@CurrentUser() user: JwtPayload) {
     if (!user.isAdmin) throw new ForbiddenException('Admin only');
@@ -66,10 +72,7 @@ export class EmployersController {
   @ApiOperation({ summary: '[Admin] Add a new employer to own company' })
   @ApiResponse({ status: 201, description: 'New employer created.' })
   @ApiResponse({ status: 403, description: 'Admin access required.' })
-  addEmployer(
-    @CurrentUser() user: JwtPayload,
-    @Body() body: AddEmployerDto,
-  ) {
+  addEmployer(@CurrentUser() user: JwtPayload, @Body() body: AddEmployerDto) {
     if (!user.isAdmin) throw new ForbiddenException('Admin only');
     return this.service.addToCompany(user.companyId!, body);
   }
@@ -78,7 +81,10 @@ export class EmployersController {
   @JwtAuth('employer')
   @ApiOperation({ summary: '[Admin] Update another employer in own company' })
   @ApiResponse({ status: 200, description: 'Employer updated.' })
-  @ApiResponse({ status: 403, description: 'Admin access required or not in your company.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Admin access required or not in your company.',
+  })
   @ApiResponse({ status: 404, description: 'Employer not found.' })
   updateById(
     @CurrentUser() user: JwtPayload,
@@ -93,7 +99,10 @@ export class EmployersController {
   @JwtAuth('employer')
   @ApiOperation({ summary: '[Admin] Remove an employer from own company' })
   @ApiResponse({ status: 200, description: 'Employer removed.' })
-  @ApiResponse({ status: 403, description: 'Admin access required or not in your company.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Admin access required or not in your company.',
+  })
   @ApiResponse({ status: 404, description: 'Employer not found.' })
   deleteById(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     if (!user.isAdmin) throw new ForbiddenException('Admin only');

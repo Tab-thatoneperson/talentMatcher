@@ -142,11 +142,15 @@ export class ElasticsearchConnectionService implements OnModuleInit {
       try {
         const exists = await this.esService.indices.exists({ index });
         if (!exists) {
-          await this.esService.indices.create({ index, mappings } as Parameters<typeof this.esService.indices.create>[0]);
+          await this.esService.indices.create({ index, mappings } as Parameters<
+            typeof this.esService.indices.create
+          >[0]);
           this.logger.log(`Created index: ${index}`);
         }
       } catch (err: unknown) {
-        this.logger.warn(`Could not ensure index ${index}: ${(err as Error).message}`);
+        this.logger.warn(
+          `Could not ensure index ${index}: ${(err as Error).message}`,
+        );
       }
     }
   }

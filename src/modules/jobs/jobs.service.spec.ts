@@ -40,7 +40,10 @@ describe('JobsService', () => {
     update: jest.Mock;
     delete: jest.Mock;
   };
-  let candidateRepo: { findById: jest.Mock; findRecommendationsForJob: jest.Mock };
+  let candidateRepo: {
+    findById: jest.Mock;
+    findRecommendationsForJob: jest.Mock;
+  };
 
   beforeEach(async () => {
     jobRepo = {
@@ -110,14 +113,18 @@ describe('JobsService', () => {
       const result = await service.getRecommendationsForCandidate('cand-1');
 
       expect(candidateRepo.findById).toHaveBeenCalledWith('cand-1');
-      expect(jobRepo.findRecommendationsForCandidate).toHaveBeenCalledWith(['TypeScript']);
+      expect(jobRepo.findRecommendationsForCandidate).toHaveBeenCalledWith([
+        'TypeScript',
+      ]);
       expect(result).toHaveLength(1);
     });
 
     it('throws NotFoundException when candidate does not exist', async () => {
       candidateRepo.findById.mockResolvedValue(null);
 
-      await expect(service.getRecommendationsForCandidate('missing')).rejects.toThrow(NotFoundException);
+      await expect(
+        service.getRecommendationsForCandidate('missing'),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -133,7 +140,9 @@ describe('JobsService', () => {
     it('throws NotFoundException when job does not exist', async () => {
       jobRepo.findById.mockResolvedValue(null);
 
-      await expect(service.getById('missing')).rejects.toThrow(NotFoundException);
+      await expect(service.getById('missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -150,7 +159,10 @@ describe('JobsService', () => {
       expect(result.companyId).toBe('comp-1');
       expect(result.companyName).toBe('Acme Corp');
       expect(result.title).toBe('Backend Dev');
-      expect(jobRepo.create).toHaveBeenCalledWith('new-job-id', expect.objectContaining({ title: 'Backend Dev' }));
+      expect(jobRepo.create).toHaveBeenCalledWith(
+        'new-job-id',
+        expect.objectContaining({ title: 'Backend Dev' }),
+      );
     });
   });
 
@@ -160,22 +172,33 @@ describe('JobsService', () => {
         .mockResolvedValueOnce(mockJob)
         .mockResolvedValueOnce({ ...mockJob, title: 'Updated Title' });
 
-      const result = await service.update('job-1', 'comp-1', { title: 'Updated Title' });
+      const result = await service.update('job-1', 'comp-1', {
+        title: 'Updated Title',
+      });
 
-      expect(jobRepo.update).toHaveBeenCalledWith('job-1', { title: 'Updated Title' });
+      expect(jobRepo.update).toHaveBeenCalledWith('job-1', {
+        title: 'Updated Title',
+      });
       expect(result.title).toBe('Updated Title');
     });
 
     it('throws NotFoundException when job does not exist', async () => {
       jobRepo.findById.mockResolvedValue(null);
 
-      await expect(service.update('missing', 'comp-1', {})).rejects.toThrow(NotFoundException);
+      await expect(service.update('missing', 'comp-1', {})).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws ForbiddenException when job belongs to a different company', async () => {
-      jobRepo.findById.mockResolvedValue({ ...mockJob, companyId: 'other-company' });
+      jobRepo.findById.mockResolvedValue({
+        ...mockJob,
+        companyId: 'other-company',
+      });
 
-      await expect(service.update('job-1', 'comp-1', {})).rejects.toThrow(ForbiddenException);
+      await expect(service.update('job-1', 'comp-1', {})).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 
@@ -191,31 +214,44 @@ describe('JobsService', () => {
     it('throws NotFoundException when job does not exist', async () => {
       jobRepo.findById.mockResolvedValue(null);
 
-      await expect(service.delete('missing', 'comp-1')).rejects.toThrow(NotFoundException);
+      await expect(service.delete('missing', 'comp-1')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws ForbiddenException when job belongs to a different company', async () => {
-      jobRepo.findById.mockResolvedValue({ ...mockJob, companyId: 'other-company' });
+      jobRepo.findById.mockResolvedValue({
+        ...mockJob,
+        companyId: 'other-company',
+      });
 
-      await expect(service.delete('job-1', 'comp-1')).rejects.toThrow(ForbiddenException);
+      await expect(service.delete('job-1', 'comp-1')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
   });
 
   describe('getRecommendationsForJob', () => {
     it('fetches job skills and queries matching candidates', async () => {
       jobRepo.findById.mockResolvedValue(mockJob);
-      candidateRepo.findRecommendationsForJob.mockResolvedValue([{ id: 'cand-1', skills: [] }]);
+      candidateRepo.findRecommendationsForJob.mockResolvedValue([
+        { id: 'cand-1', skills: [] },
+      ]);
 
       const result = await service.getRecommendationsForJob('job-1');
 
-      expect(candidateRepo.findRecommendationsForJob).toHaveBeenCalledWith(['TypeScript']);
+      expect(candidateRepo.findRecommendationsForJob).toHaveBeenCalledWith([
+        'TypeScript',
+      ]);
       expect(result).toHaveLength(1);
     });
 
     it('throws NotFoundException when job does not exist', async () => {
       jobRepo.findById.mockResolvedValue(null);
 
-      await expect(service.getRecommendationsForJob('missing')).rejects.toThrow(NotFoundException);
+      await expect(service.getRecommendationsForJob('missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

@@ -81,7 +81,12 @@ describe('AuthService', () => {
       candidateRepo.findByEmail.mockResolvedValue({ id: 'existing' });
 
       await expect(
-        service.registerCandidate({ email: 'taken@x.com', password: 'pw', firstName: 'A', lastName: 'B' }),
+        service.registerCandidate({
+          email: 'taken@x.com',
+          password: 'pw',
+          firstName: 'A',
+          lastName: 'B',
+        }),
       ).rejects.toThrow(ConflictException);
 
       expect(candidateRepo.create).not.toHaveBeenCalled();
@@ -134,8 +139,18 @@ describe('AuthService', () => {
   });
 
   describe('login', () => {
-    const candidateDoc = { id: 'c-1', email: 'c@test.com', passwordHash: 'hashed_pw' };
-    const employerDoc = { id: 'e-1', email: 'e@test.com', passwordHash: 'hashed_pw', companyId: 'co-1', isAdmin: true };
+    const candidateDoc = {
+      id: 'c-1',
+      email: 'c@test.com',
+      passwordHash: 'hashed_pw',
+    };
+    const employerDoc = {
+      id: 'e-1',
+      email: 'e@test.com',
+      passwordHash: 'hashed_pw',
+      companyId: 'co-1',
+      isAdmin: true,
+    };
 
     it('returns candidate JWT on valid candidate credentials', async () => {
       candidateRepo.findByEmail.mockResolvedValue(candidateDoc);
@@ -146,7 +161,10 @@ describe('AuthService', () => {
 
       expect(result.role).toBe('candidate');
       expect(result.accessToken).toBe('jwt.token');
-      expect(jwtService.sign).toHaveBeenCalledWith({ sub: 'c-1', role: 'candidate' });
+      expect(jwtService.sign).toHaveBeenCalledWith({
+        sub: 'c-1',
+        role: 'candidate',
+      });
     });
 
     it('returns employer JWT with companyId and isAdmin on valid employer credentials', async () => {
@@ -171,7 +189,9 @@ describe('AuthService', () => {
       candidateRepo.findByEmail.mockResolvedValue(null);
       employerRepo.findByEmail.mockResolvedValue(null);
 
-      await expect(service.login('nobody@x.com', 'pw')).rejects.toThrow(UnauthorizedException);
+      await expect(service.login('nobody@x.com', 'pw')).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
 
     it('throws UnauthorizedException when password is wrong', async () => {
@@ -179,7 +199,9 @@ describe('AuthService', () => {
       employerRepo.findByEmail.mockResolvedValue(null);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
-      await expect(service.login('c@test.com', 'wrongpw')).rejects.toThrow(UnauthorizedException);
+      await expect(service.login('c@test.com', 'wrongpw')).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 });

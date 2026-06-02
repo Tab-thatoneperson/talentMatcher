@@ -25,7 +25,13 @@ const mockCandidate = {
 
 describe('CandidatesService', () => {
   let service: CandidatesService;
-  let repo: { findById: jest.Mock; update: jest.Mock; delete: jest.Mock; findFiltered: jest.Mock; fullTextSearch: jest.Mock };
+  let repo: {
+    findById: jest.Mock;
+    update: jest.Mock;
+    delete: jest.Mock;
+    findFiltered: jest.Mock;
+    fullTextSearch: jest.Mock;
+  };
   let resumeParser: { extractText: jest.Mock };
   let llm: { extractResumeData: jest.Mock };
 
@@ -72,13 +78,21 @@ describe('CandidatesService', () => {
 
   describe('updateMe', () => {
     it('updates allowed fields and returns sanitized profile', async () => {
-      repo.findById.mockResolvedValue({ ...mockCandidate, summary: 'Updated bio' });
+      repo.findById.mockResolvedValue({
+        ...mockCandidate,
+        summary: 'Updated bio',
+      });
 
-      const result = await service.updateMe('cand-1', { summary: 'Updated bio' });
+      const result = await service.updateMe('cand-1', {
+        summary: 'Updated bio',
+      });
 
       expect(repo.update).toHaveBeenCalledWith(
         'cand-1',
-        expect.objectContaining({ summary: 'Updated bio', updatedAt: expect.any(String) }),
+        expect.objectContaining({
+          summary: 'Updated bio',
+          updatedAt: expect.any(String) as string,
+        }),
       );
       expect(result.summary).toBe('Updated bio');
       expect(result).not.toHaveProperty('passwordHash');
@@ -95,7 +109,7 @@ describe('CandidatesService', () => {
         summary: 'Legitimate change',
       } as never);
 
-      const updateArg = repo.update.mock.calls[0][1] as Record<string, unknown>;
+      const updateArg = (repo.update.mock.calls[0] as [string, Record<string, unknown>])[1];
       expect(updateArg).not.toHaveProperty('email');
       expect(updateArg).not.toHaveProperty('passwordHash');
       expect(updateArg).not.toHaveProperty('id');
@@ -121,11 +135,22 @@ describe('CandidatesService', () => {
         summary: 'ML Engineer',
         skills: [{ name: 'Python', proficiencyLevel: 5, yearsOfExperience: 4 }],
       });
-      repo.findById.mockResolvedValue({ ...mockCandidate, firstName: 'Jane', summary: 'ML Engineer' });
+      repo.findById.mockResolvedValue({
+        ...mockCandidate,
+        firstName: 'Jane',
+        summary: 'ML Engineer',
+      });
 
-      const result = await service.uploadResume('cand-1', buffer, 'application/pdf');
+      const result = await service.uploadResume(
+        'cand-1',
+        buffer,
+        'application/pdf',
+      );
 
-      expect(resumeParser.extractText).toHaveBeenCalledWith(buffer, 'application/pdf');
+      expect(resumeParser.extractText).toHaveBeenCalledWith(
+        buffer,
+        'application/pdf',
+      );
       expect(llm.extractResumeData).toHaveBeenCalledWith('raw text');
       expect(repo.update).toHaveBeenCalledWith(
         'cand-1',
@@ -147,7 +172,7 @@ describe('CandidatesService', () => {
 
       await service.uploadResume('cand-1', Buffer.from(''), 'application/pdf');
 
-      const updateArg = repo.update.mock.calls[0][1] as Record<string, unknown>;
+      const updateArg = (repo.update.mock.calls[0] as [string, Record<string, unknown>])[1];
       expect(updateArg).not.toHaveProperty('email');
       expect(updateArg).not.toHaveProperty('id');
       expect(updateArg).not.toHaveProperty('passwordHash');
@@ -172,7 +197,9 @@ describe('CandidatesService', () => {
 
       const result = await service.listAll({ skills: 'TypeScript,Python' });
 
-      expect(repo.findFiltered).toHaveBeenCalledWith({ skills: 'TypeScript,Python' });
+      expect(repo.findFiltered).toHaveBeenCalledWith({
+        skills: 'TypeScript,Python',
+      });
       expect(result).toHaveLength(1);
       expect(result[0]).not.toHaveProperty('passwordHash');
     });
@@ -180,7 +207,11 @@ describe('CandidatesService', () => {
     it('passes all filter params to repository', async () => {
       repo.findFiltered.mockResolvedValue([]);
 
-      await service.listAll({ skills: 'Go', education: 'Bachelor', experience: '3' });
+      await service.listAll({
+        skills: 'Go',
+        education: 'Bachelor',
+        experience: '3',
+      });
 
       expect(repo.findFiltered).toHaveBeenCalledWith({
         skills: 'Go',
@@ -214,7 +245,9 @@ describe('CandidatesService', () => {
     it('throws NotFoundException when candidate does not exist', async () => {
       repo.findById.mockResolvedValue(null);
 
-      await expect(service.getById('missing')).rejects.toThrow(NotFoundException);
+      await expect(service.getById('missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });
