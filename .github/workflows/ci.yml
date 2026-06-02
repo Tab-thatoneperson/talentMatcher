@@ -52,7 +52,7 @@ jobs:
           script: |
             set -e
 
-            if [ ! -d /opt/talentmatcher ]; then
+            if [ ! -d /opt/talentmatcher/.git ]; then
               sudo mkdir -p /opt/talentmatcher
               sudo chown "$(whoami)":"$(whoami)" /opt/talentmatcher
               git clone https://x-access-token:${REPO_TOKEN}@github.com/${{ github.repository }}.git /opt/talentmatcher
