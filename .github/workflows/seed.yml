@@ -1,0 +1,21 @@
+name: Seed — Clear & Reseed Jobs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    name: Seed EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH → clear ES and reseed jobs
+        uses: appleboy/ssh-action@v1
+        with:
+          host:     ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key:      ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /opt/talentmatcher
+            API_URL=http://localhost:3000 ES_URL=http://localhost:9200 node scripts/seed.js
