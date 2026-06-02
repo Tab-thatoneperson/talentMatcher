@@ -8,6 +8,7 @@ export interface JwtPayload {
   role: 'candidate' | 'employer';
   companyId?: string;
   isAdmin?: boolean;
+  isMember?: boolean;
 }
 
 @Injectable()

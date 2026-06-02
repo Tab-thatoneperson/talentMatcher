@@ -1,5 +1,9 @@
 if (!getToken() || getRole() !== 'employer') {
-  window.location.href = '/login/login-employer.html';
+  window.location.href = '/login/login.html';
+}
+
+if (isMember() === 'true') {
+  document.getElementById('member-link').style.display = 'none';
 }
 
 const form        = document.querySelector('#post-job-form');

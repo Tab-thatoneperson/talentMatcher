@@ -10,6 +10,7 @@ export interface EmployerDocument extends Record<string, unknown> {
   lastName: string;
   companyId: string;
   isAdmin: boolean;
+  isMember: boolean;
   createdAt: string;
   updatedAt: string;
 }

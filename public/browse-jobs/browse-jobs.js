@@ -1,5 +1,9 @@
 if (!getToken() || getRole() !== 'candidate') {
-  window.location.href = '/login/login-candidate.html';
+  window.location.href = '/login/login.html';
+}
+
+if (isMember() === 'true') {
+  document.getElementById('member-link').style.display = 'none';
 }
 
 const searchInput    = document.querySelector('#search-input');
@@ -97,7 +101,7 @@ function renderJobs() {
     ? filterSalary.value.split('-').map(Number)
     : [null, null];
 
-  const filtered = allJobs.filter(j => {
+  let filtered = allJobs.filter(j => {
     if (type     && j.employmentType  !== type)    return false;
     if (exp      && j.experienceLevel !== exp)      return false;
     if (industry && j.industry        !== industry) return false;
@@ -121,6 +125,12 @@ function renderJobs() {
     return;
   }
 
+  // if not membership then max 10
+  if (isMember() === 'false'){
+    filtered = filtered.slice(0, 10);
+  }
+  
+
   resultsCount.textContent = inRecommendMode
     ? `Your top ${filtered.length} job match${filtered.length !== 1 ? 'es' : ''}`
     : `Showing ${filtered.length} ${modeLabel}${filtered.length !== 1 ? 's' : ''}`;
@@ -140,19 +150,69 @@ function renderJobs() {
       : '';
 
     return `
-      <div class="card">
-        <div class="details">
+      <div class="card" style="padding-bottom:50px">
+        <div id="${job.id}card" class="details">
           <h2>${escHtml(job.title)}${rankBadge}</h2>
           <p class="meta-text">${escHtml(job.companyName || '')}${location ? ' &bull; ' + location : ''}</p>
           <div class="tag-group">${typeTag}${expTag}${indTag}${salary}</div>
         </div>
         <div class="actions-row">
-          <span class="text-link" style="cursor:pointer;">View details</span>
-          <button class="btn btn-primary btn-sm">Apply</button>
+          <button id='${job.id}' onclick="moreDetails()" class="viewDetails btn btn-primary btn-sm">View details</button>
         </div>
       </div>
     `;
   }).join('');
+}
+
+async function moreDetails() {
+  var btn = document.activeElement;
+  console.log('button pressed', btn.id);
+  try {
+      job = await api.get(`/jobs/${btn.id}`);
+      console.log(job);
+
+      // const jobCards = document.querySelectorAll(`.details`);
+      // console.log(jobCards)
+      console.log('just before get job card')
+      const jobCard = document.getElementById(`${job.id}card`);
+      console.log(jobCard)
+
+      const remote = job.location.remote ? `<span class="tag tag-grey">Remote</span>` : `<span class="tag tag-grey">On-site</span>`;
+
+      jobCard.innerHTML +=
+       `
+        <div class="details">
+          <h2>More Details</h2>
+          <p class="meta-text" style="font-size:14px">${escHtml(job.description || '')}</p>
+          <div class="tag-group">
+            <span class="tag tag-grey">Expires at: ${escHtml(job.expiresAt)}</span>
+            ${remote}                
+          </div>
+          <p class="meta-text" style="margin-top:20px">Required skills: </p>
+          <div class="tag-group" style="margin-top:-10px">
+        
+      `;
+
+      job.requiredSkills.forEach(element => {
+        jobCard.innerHTML +=
+          `
+            <span class="tag tag-green">${escHtml(element.name)}</span>              
+          `;
+      });
+
+      jobCard.innerHTML += 
+      `
+          </div>
+        </div>
+      `;
+
+      btn.parentNode.removeChild(btn);  
+
+
+    } catch (err) {
+      console.log(err.message);
+    }
+
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────

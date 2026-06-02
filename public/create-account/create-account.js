@@ -1,6 +1,13 @@
 const container  = document.querySelector('.container');
 const isEmployer = container.dataset.pageType === 'employer';
 
+async function wait(ms) {
+  return new Promise((resolve) => {
+    console.log(ms);
+    setTimeout(resolve, ms);
+  });
+}
+
 // ── Password conditions display ────────────────────────────────────────────
 const passwordField = document.querySelector('#password-field');
 
@@ -85,16 +92,19 @@ buttonClick.addEventListener('click', async function (e) {
       const organizationName = document.querySelector('#company-name-input').value.trim();
       await api.post('/auth/register/employer', { firstName, lastName, email, password, organizationName });
     } else {
-      await api.post('/auth/register/candidate', { firstName, lastName, email, password });
+      const loginData = await api.post('/auth/register/candidate', { firstName, lastName, email, password });
     }
 
     // Auto-login after registration
+    await wait(2000);
     const loginData = await api.post('/auth/login', { email, password });
+
     saveSession(loginData);
 
     window.location.href = isEmployer
       ? '../set-up-account/set-up-account-employer.html'
       : '../set-up-account/set-up-account-candidate.html';
+
   } catch (err) {
     errorBanner.textContent        = err.message || 'Registration failed. Please try again.';
     errorBanner.style.display      = 'block';
