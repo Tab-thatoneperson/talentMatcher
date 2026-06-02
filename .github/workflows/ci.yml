@@ -52,6 +52,14 @@ jobs:
           script: |
             set -e
 
+            if ! command -v docker &> /dev/null; then
+              echo "── installing docker ──"
+              sudo apt-get update -y
+              sudo apt-get install -y docker.io docker-compose-plugin
+              sudo usermod -aG docker "$USER"
+              sudo systemctl enable --now docker
+            fi
+
             if [ ! -d /opt/talentmatcher/.git ]; then
               sudo mkdir -p /opt/talentmatcher
               sudo chown "$(whoami)":"$(whoami)" /opt/talentmatcher
