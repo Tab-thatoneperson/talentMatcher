@@ -102,7 +102,7 @@ buttonClick.addEventListener('click', async function (e) {
     saveSession(loginData);
 
     window.location.href = isEmployer
-      ? '../set-up-account/set-up-account-employer.html'
+      ? '../browse-candidates/browse-candidates.html'
       : '../set-up-account/set-up-account-candidate.html';
 
   } catch (err) {

@@ -8,10 +8,10 @@ if (isMember() === 'true') {
 
 const form        = document.querySelector('#post-job-form');
 const errorBanner = document.querySelector('#form-error');
+const industry = document.querySelector('#job-industry');
 const successBanner = document.querySelector('#form-success');
 const skillsInput = document.querySelector('#skills-input');
 const skillsTags  = document.querySelector('#skills-tags');
-const saveDraft   = document.querySelector('#save-draft');
 const submitBtn   = form.querySelector('button[type="submit"]');
 
 const skills = [];
@@ -108,9 +108,4 @@ async function submitJob(status) {
 form.addEventListener('submit', e => {
   e.preventDefault();
   submitJob('active');
-});
-
-saveDraft.addEventListener('click', e => {
-  e.preventDefault();
-  submitJob('draft');
 });
